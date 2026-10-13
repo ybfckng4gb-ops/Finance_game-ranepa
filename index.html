@@ -1,459 +1,133 @@
-<!DOCTYPE html>
-<html lang="ru">
-<head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<title>Финансовая игра — играй с друзьями</title>
-<meta name="description" content="Настольная финансовая игра онлайн: профессии, проекты, риск и рейтинг. 2–6 игроков, ~30 минут.">
-<style>
+<!DOCTYPE html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><title>Финансовая игра — играй с друзьями</title><meta name="description" content="Настольная финансовая игра онлайн: профессии, проекты, риск и рейтинг. 2–6 игроков, ~30 минут."><style>
 :root{color-scheme:dark;--bg:#14110d;--pn:#221c15;--tx:#f3ead8;--mu:#a89c85;--gd:#e8b84a}
 *{box-sizing:border-box}html{scroll-behavior:smooth}
 body{margin:0;background:var(--bg);color:var(--tx);font:16px/1.55 system-ui,sans-serif;padding:env(safe-area-inset-top,0) 0 env(safe-area-inset-bottom,0)}
 .w{max-width:960px;margin:0 auto;padding:0 16px}
 .hero{text-align:center;padding:56px 0 36px;background:radial-gradient(circle at 50% 0,#4a3512,transparent 65%)}
 h1{font-size:clamp(30px,7vw,52px);margin:0 0 10px;color:var(--gd)}.hero p{color:var(--mu);margin:0 0 22px;font-size:18px}
-.btn{display:inline-block;background:linear-gradient(#e8b84a,#b8861f);color:#1a1307;font-weight:800;text-decoration:none;padding:14px 34px;border-radius:12px;font-size:18px;border:0;cursor:pointer}
-.btn.s{background:#463c2d;color:var(--tx)}
+.btn{display:inline-block;background:linear-gradient(#e8b84a,#b8861f);color:#1a1307;font-weight:800;text-decoration:none;padding:14px 34px;border-radius:12px;font-size:18px}
 h2{color:var(--gd);margin:34px 0 12px}
 .g{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:10px}
 .c{background:var(--pn);border-radius:12px;padding:14px}.c b{display:block;margin-bottom:4px}.c span{color:var(--mu);font-size:14px}
 .b{border-left:6px solid}.w1{border-color:#2f7be0}.l1{border-color:#35a445}.p1{border-color:#9a3fd0}.k1{border-color:#e8741c}
 iframe{width:100%;height:min(88vh,860px);min-height:620px;border:2px solid var(--gd);border-radius:14px;background:var(--bg)}
 footer{text-align:center;color:var(--mu);font-size:13px;padding:30px 0}
-nav{position:sticky;top:0;z-index:5;display:flex;gap:6px;overflow-x:auto;padding:10px 16px;background:#14110df0;justify-content:space-between;align-items:center}
-nav .nav-left{display:flex;gap:6px;overflow-x:auto}
-nav a{white-space:nowrap;color:var(--tx);text-decoration:none;padding:8px 14px;border-radius:10px;background:var(--pn)}
-.menu-btn{position:relative;background:var(--gd);color:#1a1307;border:0;border-radius:10px;padding:8px 16px;font-weight:800;cursor:pointer;font-size:16px}
-.menu-dropdown{display:none;position:absolute;top:100%;right:0;background:var(--pn);border:2px solid var(--gd);border-radius:12px;padding:8px;min-width:220px;z-index:10;margin-top:8px}
-.menu-dropdown.show{display:block}
-.menu-item{display:block;width:100%;text-align:left;background:transparent;color:var(--tx);border:0;padding:10px 14px;border-radius:8px;cursor:pointer;font-size:14px;margin:2px 0}
-.menu-item:hover{background:var(--gd);color:#1a1307}
-.menu-item.active{background:var(--gd);color:#1a1307}
-.modal{position:fixed;inset:0;background:#000c;display:none;align-items:center;justify-content:center;padding:16px;z-index:100}
-.modal.show{display:flex}
-.modal-content{background:var(--pn);border:2px solid var(--gd);border-radius:14px;padding:24px;max-width:600px;width:100%;max-height:90vh;overflow-y:auto}
-.modal h3{color:var(--gd);margin:0 0 16px}
-.modal-close{float:right;background:transparent;border:0;color:var(--tx);font-size:24px;cursor:pointer}
-.rules-section{background:var(--pn);border-radius:12px;padding:20px;margin:20px 0}
-.rules-section h3{color:var(--gd);margin:16px 0 8px}
-.rules-section p,.rules-section li{color:var(--tx);line-height:1.6}
-.rules-section ul{padding-left:20px}
-.badge{display:inline-block;background:var(--gd);color:#1a1307;padding:2px 8px;border-radius:6px;font-size:12px;font-weight:700;margin-left:8px}
-input[type="number"],input[type="text"],select{background:#14110d;color:var(--tx);border:1px solid #5a4d3a;border-radius:8px;padding:10px;font:inherit;margin:4px 0;width:100%}
-.setting-row{display:flex;justify-content:space-between;align-items:center;margin:12px 0}
-.setting-row label{flex:1}
-.setting-row input,.setting-row select{width:120px}
-</style>
-<meta property="og:title" content="Финансовая игра">
-<meta property="og:description" content="Настольная финансовая игра онлайн для 2–6 игроков">
-<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Ctext y=%27.9em%27 font-size=%2790%27%3E💼%3C/text%3E%3C/svg%3E">
-</head>
-<body>
-<nav>
-  <div class="nav-left">
-    <a href="#play">🎮 Играть</a>
-    <a href="#rules">📖 Правила</a>
-    <a href="#lb">🏆 Рейтинг</a>
-  </div>
-  <div style="position:relative">
-    <button class="menu-btn" onclick="toggleMenu()">⚙️ Меню</button>
-    <div class="menu-dropdown" id="menuDropdown">
-      <button class="menu-item active" onclick="setMode('normal')">🎯 Обычный режим</button>
-      <button class="menu-item" onclick="setMode('campaign')">🏆 Кампания (5 партий)</button>
-      <button class="menu-item" onclick="setMode('hardcore')">💀 Хардкор</button>
-      <button class="menu-item" onclick="setMode('blitz')">⚡ Блиц (5 колонок)</button>
-      <button class="menu-item" onclick="openCustom()">🔧 Кастомные правила</button>
-      <button class="menu-item" onclick="openRules()">📜 Все правила</button>
-    </div>
-  </div>
-</nav>
-
-<header class="hero"><div class="w">
-  <h1>💼 Финансовая игра</h1>
-  <p>Выбери профессию, зарабатывай, рискуй и дойди до финиша с выполненной целью.<br>2–6 игроков · ~30 минут · один экран на всех</p>
-  <a class="btn" href="#play">▶ Играть</a>
-</div></header>
-
+nav{position:sticky;top:0;z-index:5;display:flex;gap:6px;overflow-x:auto;padding:10px 16px;background:#14110df0}nav a{white-space:nowrap;color:var(--tx);text-decoration:none;padding:8px 14px;border-radius:10px;background:var(--pn)}select,input,textarea{width:100%;background:#14110d;color:var(--tx);border:1px solid #5a4d3a;border-radius:8px;padding:10px;font:inherit;margin:4px 0}button.btn{border:0;cursor:pointer;margin-top:6px}table td{padding:6px 8px;border-bottom:1px solid #3a3022}</style><meta property="og:title" content="Финансовая игра"><meta property="og:description" content="Настольная финансовая игра онлайн для 2–6 игроков"><link rel="icon" href="data:image/svg+xml,%3Csvg xmlns=%27http://www.w3.org/2000/svg%27 viewBox=%270 0 100 100%27%3E%3Ctext y=%27.9em%27 font-size=%2790%27%3E💼%3C/text%3E%3C/svg%3E"></head><body><nav><a href="#play">🎮 Играть</a><a href="#rules">📖 Правила</a><a href="#lb">🏆 Рейтинг</a><a href="#support">💬 Поддержка</a></nav>
+<header class="hero"><div class="w"><h1>💼 Финансовая игра</h1><p>Выбери профессию, зарабатывай, рискуй и дойди до финиша с выполненной целью.<br>2–6 игроков · ~30 минут · один экран на всех</p><a class="btn" href="#play">▶ Играть</a></div></header>
 <main class="w">
-  <h2 id="play">Игра <span class="badge" id="modeBadge">Обычный</span></h2>
-  <div id="campaignInfo" style="display:none;background:var(--pn);padding:12px;border-radius:10px;margin-bottom:10px">
-    <b>🏆 Кампания:</b> Партия <span id="campaignCurrent">1</span> из 5 · Очки: <span id="campaignScore">0</span>
-  </div>
-  <iframe title="Финансовая игра" id="gameFrame"></iframe>
-
-  <h2 id="rules">Как играть</h2>
-  <div class="g">
-    <div class="c"><b>🎯 Цель</b><span>Дойти до ФИНИША с выполненной личной целью. Пришёл без цели — проиграл.</span></div>
-    <div class="c"><b>👣 Ход</b><span>Один ход — одна колонна из 10. В колонне выбираешь одну клетку.</span></div>
-    <div class="c"><b>⭐ Рейтинг</b><span>3–5: +5 000 ₽, 6–8: +10 000 ₽, 9–10: +15 000 ₽ к Работе и Проекту. Максимум — 10.</span></div>
-  </div>
-
-  <h2>Клетки</h2>
-  <div class="g">
-    <div class="c b w1"><b>💼 Работа</b><span>Деньги без риска.</span></div>
-    <div class="c b l1"><b>🎓 Обучение</b><span>Платишь деньги — получаешь рейтинг.</span></div>
-    <div class="c b p1"><b>💡 Проект</b><span>Больше денег, но с обязательной картой риска.</span></div>
-    <div class="c b k1"><b>🃏 Кейс</b><span>Карта с выбором из двух вариантов.</span></div>
-  </div>
-
-  <h2>Новые возможности</h2>
-  <div class="g">
-    <div class="c"><b>😈 Подстава</b><span>50 000 ₽: сопернику −1 рейтинг или пропуск хода.</span></div>
-    <div class="c"><b>🛡 Страховка</b><span>40 000 ₽: отменяет одну подставу.</span></div>
-    <div class="c"><b>🔨 Аукцион</b><span>Выгодные кейсы достаются тому, кто больше заплатит.</span></div>
-    <div class="c"><b>🤝 Обмен</b><span>Купи рейтинг у соседа за деньги.</span></div>
-    <div class="c"><b>🥇 Первый на финише</b><span>+100 000 ₽ бонуса.</span></div>
-    <div class="c"><b>🌪 События рынка</b><span>Каждые 3 хода — общее событие для всех игроков.</span></div>
-  </div>
-
-  <h2>Профессии</h2>
-  <div class="g">
-    <div class="c"><b>Event-менеджер</b><span>1 раз перетянуть карту риска</span></div>
-    <div class="c"><b>Фотограф</b><span>+20 000 ₽ к Проектам</span></div>
-    <div class="c"><b>Музыкант</b><span>Первое Обучение +1 рейтинг сверх</span></div>
-    <div class="c"><b>Дизайнер</b><span>Старт с рейтингом 1</span></div>
-    <div class="c"><b>Разработчик</b><span>Обучение дешевле на 20 000 ₽</span></div>
-    <div class="c"><b>Копирайтер</b><span>+20 000 ₽ к Работам</span></div>
-    <div class="c"><b>Иллюстратор</b><span>Первый риск не применяется</span></div>
-    <div class="c"><b>Продюсер</b><span>Старт с 220 000 ₽</span></div>
-  </div>
-
-  <div class="rules-section">
-    <h2 id="fullRules">📜 Полные правила игры</h2>
-    <h3>🎯 Основное</h3>
-    <ul>
-      <li><b>Игроки:</b> 2–6</li>
-      <li><b>Время:</b> ~30 минут</li>
-      <li><b>Максимальный рейтинг:</b> 10</li>
-      <li><b>Цель:</b> Дойти до ФИНИША с выполненной личной целью. Пришёл без цели — проиграл.</li>
-    </ul>
-
-    <h3>💰 Рейтинг → Доход</h3>
-    <p>Надбавка к базовой сумме Работы и Проекта:</p>
-    <ul>
-      <li>Рейтинг 0–2 → +0 ₽</li>
-      <li>Рейтинг 3–5 → +5 000 ₽</li>
-      <li>Рейтинг 6–8 → +10 000 ₽</li>
-      <li>Рейтинг 9–10 → +15 000 ₽</li>
-    </ul>
-    <p><i>К эффектам карт риска и кейсов надбавка не применяется.</i></p>
-
-    <h3>🎬 Подготовка</h3>
-    <p>Каждый получает:</p>
-    <ul>
-      <li>Карту профессии (открыто)</li>
-      <li>Карту цели (открыто)</li>
-      <li>200 000 ₽</li>
-      <li>0 рейтинга</li>
-      <li>Фишку на СТАРТ</li>
-    </ul>
-    <p>Колода риска (44 карты) и колода кейсов (18 карт) — рядом с полем.</p>
-
-    <h3>🗺 Поле — 10 КОЛОНН</h3>
-    <p>Колонны 1–9 — игровые. Колонна 10 — ФИНИШ.</p>
-    <p>Один ход = одна колонна. В колонне выбираешь одну клетку.</p>
-    <ul>
-      <li><b>Колонна 1:</b> Работа (+100 000 ₽), Проект (+150 000 ₽ + риск)</li>
-      <li><b>Колонна 2:</b> Работа, Обучение (−50 000 ₽, +1 рейтинг), Кейс</li>
-      <li><b>Колонна 3:</b> Работа, Проект</li>
-      <li><b>Колонна 4:</b> Работа, Обучение (−80 000 ₽, +2 рейтинга), Кейс</li>
-      <li><b>Колонна 5 — полоса риска:</b> только Проект (+150 000 ₽ + риск)</li>
-      <li><b>Колонна 6:</b> Работа, Обучение (−100 000 ₽, +2 рейтинга), Кейс</li>
-      <li><b>Колонна 7:</b> Работа, Проект</li>
-      <li><b>Колонна 8:</b> Работа (+150 000 ₽), Обучение (−130 000 ₽, +3 рейтинга), Кейс</li>
-      <li><b>Колонна 9:</b> Работа (+150 000 ₽), Обучение (−150 000 ₽, +3 рейтинга), Проект (+200 000 ₽ + риск)</li>
-      <li><b>Колонна 10 — ФИНИШ:</b> Пришёл — проверяешь цель.</li>
-    </ul>
-
-    <h3>🎨 Типы клеток</h3>
-    <ul>
-      <li>🟦 <b>Работа</b> — деньги без риска</li>
-      <li>🟩 <b>Обучение</b> — платишь деньги, получаешь рейтинг</li>
-      <li>🟪 <b>Проект</b> — деньги + обязательная карта риска</li>
-      <li>🟧 <b>Кейс</b> — выбираешь один из двух вариантов</li>
-    </ul>
-
-    <h3>🔄 Как проходит ход</h3>
-    <ol>
-      <li>Применить статусы, уменьшить счётчики</li>
-      <li>Если есть «Пропуск хода» — пропустить</li>
-      <li>Перейти на следующую колонну</li>
-      <li>Выбрать клетку</li>
-      <li>Выполнить действие</li>
-      <li>Проект → карта риска. Кейс → карта кейса</li>
-      <li>Передать ход</li>
-    </ol>
-
-    <h3>📊 Статусы</h3>
-    <p>Эффекты на 1–3 хода. Не больше 2 статусов одновременно.</p>
-    <ul>
-      <li><b>Пассивный доход</b> — +N ₽ в начале хода</li>
-      <li><b>Пассивный убыток</b> — −N ₽ в начале хода</li>
-      <li><b>Пропуск хода</b> — пропускаешь следующий ход</li>
-      <li><b>Блокировка рейтинга</b> — рейтинг не растёт</li>
-    </ul>
-
-    <h3>🌪 События рынка (каждые 3 хода)</h3>
-    <ul>
-      <li><b>Экономический кризис</b> — все теряют 10% денег</li>
-      <li><b>Бум на рынке</b> — все получают +50 000 ₽</li>
-      <li><b>Новые технологии</b> — Проекты дают +30 000 ₽ бонус (2 хода)</li>
-      <li><b>Скандал в индустрии</b> — все теряют 1 рейтинг</li>
-    </ul>
-
-    <h3>🎭 Режимы игры</h3>
-    <ul>
-      <li><b>Обычный</b> — стандартная игра на 10 колонок</li>
-      <li><b>Кампания</b> — серия из 5 партий с накоплением очков</li>
-      <li><b>Хардкор</b> — без сохранений, один шанс на ошибку</li>
-      <li><b>Блиц</b> — ускоренная игра (5 колонок вместо 10)</li>
-      <li><b>Кастомные правила</b> — настрой параметры под себя</li>
-    </ul>
-
-    <h3>🏆 Финал</h3>
-    <p>Пришёл на Колонну 10:</p>
-    <ul>
-      <li>Цель выполнена → победа</li>
-      <li>Цель не выполнена → проигрыш</li>
-    </ul>
-    <p>Если победителей несколько — выше рейтинг, потом больше денег.</p>
-  </div>
-
-  <h2 id="lb">🏆 Рейтинг игроков</h2>
-  <div class="c" id="lbox"></div>
-  <p class="tag" id="lbn"></p>
-</main>
-<footer>Передавайте устройство по кругу. Хорошей игры!</footer>
-
-<div class="modal" id="customModal">
-  <div class="modal-content">
-    <button class="modal-close" onclick="closeCustom()">×</button>
-    <h3>🔧 Кастомные правила</h3>
-    <div class="setting-row">
-      <label>Стартовые деньги:</label>
-      <input type="number" id="customMoney" value="200000" step="10000">
-    </div>
-    <div class="setting-row">
-      <label>Количество колонок:</label>
-      <input type="number" id="customCols" value="10" min="5" max="10">
-    </div>
-    <div class="setting-row">
-      <label>Бонус к рейтингу (3-5):</label>
-      <input type="number" id="customBonus1" value="5000" step="1000">
-    </div>
-    <div class="setting-row">
-      <label>Бонус к рейтингу (6-8):</label>
-      <input type="number" id="customBonus2" value="10000" step="1000">
-    </div>
-    <div class="setting-row">
-      <label>Бонус к рейтингу (9-10):</label>
-      <input type="number" id="customBonus3" value="15000" step="1000">
-    </div>
-    <button class="btn" onclick="applyCustom()" style="width:100%;margin-top:16px">Применить</button>
-  </div>
-</div>
-
-<div class="modal" id="rulesModal">
-  <div class="modal-content">
-    <button class="modal-close" onclick="closeRules()">×</button>
-    <h3>📜 Полные правила игры</h3>
-    <div id="rulesContent"></div>
-  </div>
-</div>
-
-<script>
+<h2 id="rules">Как играть</h2><div class="g">
+<div class="c"><b>🎯 Цель</b><span>Дойти до ФИНИША с выполненной личной целью. Пришёл без цели — проиграл.</span></div>
+<div class="c"><b>👣 Ход</b><span>Один ход — одна колонна из 10. В колонне выбираешь одну клетку.</span></div>
+<div class="c"><b>⭐ Рейтинг</b><span>3–5: +5 000 ₽, 6–8: +10 000 ₽, 9–10: +15 000 ₽ к Работе и Проекту. Максимум — 10.</span></div></div>
+<h2>Клетки</h2><div class="g">
+<div class="c b w1"><b>💼 Работа</b><span>Деньги без риска.</span></div>
+<div class="c b l1"><b>🎓 Обучение</b><span>Платишь деньги — получаешь рейтинг.</span></div>
+<div class="c b p1"><b>💡 Проект</b><span>Больше денег, но с обязательной картой риска.</span></div>
+<div class="c b k1"><b>🃏 Кейс</b><span>Карта с выбором из двух вариантов.</span></div></div>
+<h2>Новые возможности</h2><div class="g"><div class="c"><b>😈 Подстава</b><span>50 000 ₽: сопернику −1 рейтинг или пропуск хода.</span></div><div class="c"><b>🛡 Страховка</b><span>40 000 ₽: отменяет одну подставу.</span></div><div class="c"><b>🔨 Аукцион</b><span>Выгодные кейсы достаются тому, кто больше заплатит.</span></div><div class="c"><b>🤝 Обмен</b><span>Купи рейтинг у соседа за деньги.</span></div><div class="c"><b>🥇 Первый на финише</b><span>+100 000 ₽ бонуса.</span></div></div><h2>Профессии</h2><div class="g">
+<div class="c"><b>Event-менеджер</b><span>1 раз перетянуть карту риска</span></div><div class="c"><b>Фотограф</b><span>+20 000 ₽ к Проектам</span></div><div class="c"><b>Музыкант</b><span>Первое Обучение +1 рейтинг сверх</span></div><div class="c"><b>Дизайнер</b><span>Старт с рейтингом 1</span></div><div class="c"><b>Разработчик</b><span>Обучение дешевле на 20 000 ₽</span></div><div class="c"><b>Копирайтер</b><span>+20 000 ₽ к Работам</span></div><div class="c"><b>Иллюстратор</b><span>Первый риск не применяется</span></div><div class="c"><b>Продюсер</b><span>Старт с 240 000 ₽</span></div></div>
+<h2 id="play">Игра</h2>
+<iframe title="Финансовая игра" srcdoc="&lt;!DOCTYPE html&gt;&lt;html lang=&quot;ru&quot;&gt;&lt;head&gt;&lt;meta charset=&quot;utf-8&quot;&gt;&lt;meta name=&quot;viewport&quot; content=&quot;width=device-width, initial-scale=1, viewport-fit=cover&quot;&gt;&lt;title&gt;Финансовая игра&lt;/title&gt;&lt;style&gt;
+:root{color-scheme:dark;--bg:#14110d;--pn:#221c15;--tx:#f3ead8;--mu:#a89c85;--gd:#e8b84a;--w:#2f7be0;--l:#35a445;--p:#9a3fd0;--c:#e8741c;--r:#c8322d;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}
+html{scroll-padding-top:env(safe-area-inset-top,0px)}*{box-sizing:border-box}
+body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.4 system-ui,sans-serif}
+h1{font-size:20px;margin:10px 12px;color:var(--gd)}
+.pn{background:var(--pn);border-radius:12px;margin:8px;padding:10px}
+.bar{display:flex;gap:6px;overflow-x:auto;padding:0 8px}
+.chip{flex:0 0 auto;background:var(--pn);border:2px solid transparent;border-radius:10px;padding:6px 9px;font-size:13px;min-width:112px}
+.chip.on{border-color:var(--gd)}.chip.fin{opacity:.55}
+.dot{display:inline-block;width:12px;height:12px;border-radius:50%;border:1px solid #fff;margin-right:5px}
+.rt{display:flex;gap:6px;font-size:12px;overflow-x:auto;padding:0 8px;color:var(--mu)}.rt span{white-space:nowrap;background:var(--pn);padding:3px 8px;border-radius:8px}
+.board{display:flex;gap:6px;overflow-x:auto;padding:8px;scroll-snap-type:x proximity}
+.col{flex:0 0 108px;display:flex;flex-direction:column;gap:5px;background:var(--pn);border-radius:10px;padding:6px;scroll-snap-align:center;opacity:.55}
+.col.nx{opacity:1;outline:2px solid var(--gd)}.col.r5{background:#3a1414}
+.ch{text-align:center;font-size:12px;font-weight:700}.pw{min-height:20px;display:flex;flex-wrap:wrap;gap:3px;justify-content:center}
+.cell{border:0;border-radius:8px;color:#fff;padding:8px 4px;font:600 12px/1.25 system-ui;text-align:center;min-height:64px;flex:1}
+.cell.w{background:var(--w)}.cell.l{background:var(--l)}.cell.p{background:var(--p)}.cell.c{background:var(--c)}
+.cell:disabled{filter:grayscale(.6) brightness(.7)}.nx .cell:not(:disabled){box-shadow:0 0 0 2px #fff6}
+.fn{background:linear-gradient(#e8b84a,#a8791d);color:#222;border:0;border-radius:8px;font-weight:800;padding:8px 4px;flex:1}
+.btn{background:var(--gd);color:#222;border:0;border-radius:10px;padding:11px 16px;font:700 15px system-ui;margin:4px 4px 0 0}
+.btn.s{background:#463c2d;color:var(--tx)}
+input{background:#14110d;color:var(--tx);border:1px solid #5a4d3a;border-radius:8px;padding:9px;font-size:15px;width:100%;margin:4px 0}
+#lg{font-size:12px;color:var(--mu);max-height:96px;overflow:auto}
+#md{position:fixed;inset:0;background:#000b;display:none;align-items:center;justify-content:center;padding:16px;z-index:9}
+#md&gt;div{background:var(--pn);border:2px solid var(--gd);border-radius:14px;padding:16px;max-width:420px;width:100%;max-height:90%;overflow:auto}
+.tag{font-size:12px;color:var(--mu)}@keyframes fall{to{transform:translateY(105vh) rotate(720deg)}}@keyframes pop{from{transform:scale(.8);opacity:0}}#mb{animation:pop .25s}.pw .dot{animation:pop .4s}select{width:100%;padding:9px;background:#14110d;color:var(--tx);border:1px solid #5a4d3a;border-radius:8px}.ok{color:#6fe08a}.no{color:#ff7b72}
+&lt;/style&gt;&lt;/head&gt;&lt;body&gt;
+&lt;h1&gt;💼 Финансовая игра&lt;/h1&gt;&lt;div id=&quot;app&quot;&gt;&lt;/div&gt;&lt;div id=&quot;md&quot;&gt;&lt;div id=&quot;mb&quot;&gt;&lt;/div&gt;&lt;/div&gt;
+&lt;script&gt;
+const $=s=&gt;document.querySelector(s),fmt=n=&gt;(n&lt;0?&#x27;−&#x27;:&#x27;&#x27;)+Math.abs(n).toLocaleString(&#x27;ru-RU&#x27;).replace(/\s/g,&#x27; &#x27;)+&#x27; ₽&#x27;,sg=n=&gt;(n&gt;0?&#x27;+&#x27;:&#x27;&#x27;)+fmt(n);
+const COLORS=[&#x27;#e0372f&#x27;,&#x27;#2f6fe0&#x27;,&#x27;#35a445&#x27;,&#x27;#e8c21c&#x27;,&#x27;#9a3fd0&#x27;,&#x27;#666&#x27;],NAMES=[&#x27;Красный&#x27;,&#x27;Синий&#x27;,&#x27;Зелёный&#x27;,&#x27;Жёлтый&#x27;,&#x27;Фиолетовый&#x27;,&#x27;Чёрный&#x27;];
+const PRO=[[&#x27;Event-менеджер&#x27;,&#x27;1 раз за игру можно перетянуть карту риска&#x27;],[&#x27;Фотограф&#x27;,&#x27;+20 000 ₽ к каждому Проекту&#x27;],[&#x27;Музыкант&#x27;,&#x27;первое Обучение даёт +1 рейтинг сверх&#x27;],[&#x27;Дизайнер&#x27;,&#x27;стартует с рейтингом 1&#x27;],[&#x27;Разработчик&#x27;,&#x27;Обучение дешевле на 20 000 ₽&#x27;],[&#x27;Копирайтер&#x27;,&#x27;+20 000 ₽ к каждой Работе&#x27;],[&#x27;Иллюстратор&#x27;,&#x27;первая карта риска не применяется&#x27;],[&#x27;Продюсер&#x27;,&#x27;стартует с 240 000 ₽&#x27;]];
+const GOAL=[[&#x27;Рейтинг 7+&#x27;,0,7],[&#x27;Рейтинг 8+&#x27;,0,8],[&#x27;Рейтинг 9+&#x27;,0,9],[&#x27;Не менее 1 400 000 ₽&#x27;,1.4e6,0],[&#x27;Не менее 900 000 ₽ и рейтинг 4+&#x27;,9e5,4],[&#x27;Не менее 700 000 ₽ и рейтинг 6+&#x27;,7e5,6],[&#x27;Не менее 800 000 ₽ и рейтинг 5+&#x27;,8e5,5],[&#x27;Не менее 600 000 ₽ и рейтинг 7+&#x27;,6e5,7]];
+const COLS={1:[[&#x27;w&#x27;,1e5],[&#x27;p&#x27;,15e4]],2:[[&#x27;w&#x27;,1e5],[&#x27;l&#x27;,5e4,1],[&#x27;c&#x27;]],3:[[&#x27;w&#x27;,1e5],[&#x27;p&#x27;,15e4]],4:[[&#x27;w&#x27;,1e5],[&#x27;l&#x27;,8e4,2],[&#x27;c&#x27;]],5:[[&#x27;p&#x27;,15e4]],6:[[&#x27;w&#x27;,1e5],[&#x27;l&#x27;,1e5,2],[&#x27;c&#x27;]],7:[[&#x27;w&#x27;,1e5],[&#x27;p&#x27;,15e4]],8:[[&#x27;w&#x27;,15e4],[&#x27;l&#x27;,13e4,3],[&#x27;c&#x27;]],9:[[&#x27;w&#x27;,15e4],[&#x27;l&#x27;,15e4,3],[&#x27;p&#x27;,2e5]]};
+const R=[[&#x27;Клиент недоволен&#x27;,{r:-2}],[&#x27;Заказчик рекомендовал&#x27;,{r:2}],[&#x27;Проект удачнее ожиданий&#x27;,{m:1e5}],[&#x27;Превышен бюджет&#x27;,{m:-8e4}],[&#x27;Форс-мажор&#x27;,{m:-5e4,r:-1}],[&#x27;Идея стала вирусной&#x27;,{m:8e4,r:1}],[&#x27;Клиент просит правки&#x27;,{ch:[{m:-5e4},{r:-1}]}],[&#x27;Новый заказчик&#x27;,{m:6e4,r:1}],[&#x27;Переработка&#x27;,{m:8e4,r:-1}],[&#x27;Удачный питч&#x27;,{r:1}],[&#x27;Партнёр подвёл&#x27;,{r:-1}],[&#x27;Кейс в портфолио&#x27;,{r:1}],[&#x27;Задержка оплаты&#x27;,{m:-6e4}],[&#x27;Премия&#x27;,{m:1e5}],[&#x27;Критика в соцсетях&#x27;,{r:-1}],[&#x27;Упоминание в издании&#x27;,{r:1}],[&#x27;Срочный заказ&#x27;,{ch:[{m:12e4},{r:1}]}],[&#x27;Клиент ушёл к конкуренту&#x27;,{m:-1e5}],[&#x27;Проект закрыт досрочно&#x27;,{m:6e4,r:-1}],[&#x27;Приглашение на конференцию&#x27;,{m:3e4,r:1}],[&#x27;Выгорание&#x27;,{s:[&#x27;skip&#x27;,0,1]}],[&#x27;Юридический спор&#x27;,{s:[&#x27;loss&#x27;,4e4,2]}],[&#x27;Творческий кризис&#x27;,{s:[&#x27;block&#x27;,0,2]}],[&#x27;Профессиональный застой&#x27;,{r:-1,s:[&#x27;skip&#x27;,0,1]}]];
+const C=[[&#x27;Срочный заказ&#x27;,{m:15e4,r:-1},{r:1}],[&#x27;Курс повышения&#x27;,{m:-1e5,r:2},{}],[&#x27;Скидка старому клиенту&#x27;,{m:6e4,r:1},{m:12e4,r:-1}],[&#x27;Подработка на выходных&#x27;,{m:8e4,r:-1},{r:1}],[&#x27;Новое оборудование&#x27;,{m:-15e4,r:2},{}],[&#x27;Конференция&#x27;,{m:-5e4,r:1},{m:8e4}],[&#x27;Долгосрочный контракт&#x27;,{m:2e5,r:-2},{r:1}],[&#x27;Разделить заказ с партнёром&#x27;,{m:12e4,r:-1},{m:6e4,r:1}],[&#x27;Бартер вместо оплаты&#x27;,{m:-5e4,r:1},{m:1e5,r:-1}],[&#x27;Помощь молодого специалиста&#x27;,{m:4e4,r:1},{m:1e5,r:-1}],[&#x27;Мастер-класс&#x27;,{m:-8e4,r:2},{m:5e4}],[&#x27;Бесплатные правки&#x27;,{m:4e4,r:-1},{r:1}],[&#x27;Эксклюзивный заказ&#x27;,{m:25e4,r:-2},{r:1}],[&#x27;Онлайн-курс за рубежом&#x27;,{m:-18e4,r:3},{}],[&#x27;Объединение для тендера&#x27;,{m:1e5,r:1},{m:4e4,r:-1}],[&#x27;Написать книгу&#x27;,{m:-5e4,r:2},{m:1e5}],[&#x27;Контракт на обслуживание&#x27;,{s:[&#x27;gain&#x27;,6e4,3]},{m:15e4}],[&#x27;Отпуск или подработка&#x27;,{r:1,s:[&#x27;skip&#x27;,0,1]},{m:15e4,s:[&#x27;loss&#x27;,4e4,2]}]];
+const shuf=a=&gt;{a=[...a];for(let i=a.length;i--;){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a};
+const bonus=r=&gt;r&gt;=9?15e3:r&gt;=6?1e4:r&gt;=3?5e3:0;
+const desc=e=&gt;{if(!e||!Object.keys(e).length)return&#x27;ничего&#x27;;const o=[];if(e.m)o.push(sg(e.m));if(e.r)o.push((e.r&gt;0?&#x27;+&#x27;:&#x27;−&#x27;)+Math.abs(e.r)+&#x27; рейтинг&#x27;);if(e.s){const[t,a,c]=e.s;o.push(t==&#x27;skip&#x27;?&#x27;пропуск хода&#x27;:t==&#x27;block&#x27;?`блокировка рейтинга (${c} хода)`:t==&#x27;gain&#x27;?`пассивный доход +${fmt(a)} (${c} хода)`:`пассивный убыток −${fmt(a)} (${c} хода)`)}return o.join(&#x27;, &#x27;)};
+let G,LOG=[];const cur=()=&gt;G.ps[G.i],log=t=&gt;{LOG.unshift(t);LOG=LOG.slice(0,30)};
+function M(t,b,btns){$(&#x27;#mb&#x27;).innerHTML=`&lt;h3 style=&quot;margin:0 0 8px;color:var(--gd)&quot;&gt;${t}&lt;/h3&gt;&lt;div&gt;${b}&lt;/div&gt;&lt;div style=&quot;margin-top:10px&quot; id=&quot;mbt&quot;&gt;&lt;/div&gt;`;btns.forEach(([l,f,s])=&gt;{const x=document.createElement(&#x27;button&#x27;);x.className=&#x27;btn&#x27;+(s?&#x27; s&#x27;:&#x27;&#x27;);x.textContent=l;x.onclick=()=&gt;{$(&#x27;#md&#x27;).style.display=&#x27;none&#x27;;f&amp;&amp;f()};$(&#x27;#mbt&#x27;).appendChild(x)});$(&#x27;#mb&#x27;).style.animation=&#x27;none&#x27;;void $(&#x27;#mb&#x27;).offsetWidth;$(&#x27;#mb&#x27;).style.animation=&#x27;&#x27;;beep(520,.08);$(&#x27;#md&#x27;).style.display=&#x27;flex&#x27;}
+function setup(){let n=3,sv=null;try{sv=localStorage.getItem(&#x27;fg_save&#x27;)}catch(e){}const draw=()=&gt;{$(&#x27;#app&#x27;).innerHTML=`&lt;div class=&quot;pn&quot;&gt;${sv?&#x27;&lt;button class=&quot;btn&quot; onclick=&quot;resume()&quot;&gt;▶ Продолжить сохранённую партию&lt;/button&gt;&lt;hr&gt;&#x27;:&#x27;&#x27;}&lt;b&gt;Сколько игроков?&lt;/b&gt;&lt;div&gt;${[2,3,4,5,6].map(k=&gt;`&lt;button class=&quot;btn ${k==n?&#x27;&#x27;:&#x27;s&#x27;}&quot; onclick=&quot;setN(${k})&quot;&gt;${k}&lt;/button&gt;`).join(&#x27;&#x27;)}&lt;/div&gt;&lt;div style=&quot;margin-top:8px&quot;&gt;${Array.from({length:n},(_,i)=&gt;`&lt;label class=&quot;tag&quot;&gt;&lt;span class=&quot;dot&quot; style=&quot;background:${COLORS[i]}&quot;&gt;&lt;/span&gt;Игрок ${i+1}&lt;/label&gt;&lt;input id=&quot;n${i}&quot; value=&quot;${NAMES[i]}&quot; maxlength=&quot;14&quot;&gt;`).join(&#x27;&#x27;)}&lt;/div&gt;&lt;button class=&quot;btn&quot; onclick=&quot;go(${n})&quot; style=&quot;margin-top:10px&quot;&gt;Начать игру&lt;/button&gt;&lt;p class=&quot;tag&quot;&gt;Играем по очереди на одном устройстве. Каждому случайно достанется профессия и цель (открыто). Дойди до ФИНИША с выполненной целью!&lt;/p&gt;&lt;/div&gt;`};window.setN=k=&gt;{n=k;draw()};window.resume=()=&gt;{try{const o=JSON.parse(sv);G=o.G;LOG=o.LOG;render()}catch(e){}};draw()}
+function go(n){const pr=shuf(PRO),gl=shuf(GOAL);G={ps:Array.from({length:n},(_,i)=&gt;{const nm=$(&#x27;#n&#x27;+i).value.trim()||NAMES[i],pro=pr[i];return{n:nm,col:i*0,k:COLORS[i],pr:pro[0],pd:pro[1],g:gl[i],m:pro[0]==&#x27;Продюсер&#x27;?24e4:2e5,r:pro[0]==&#x27;Дизайнер&#x27;?1:0,st:[],fin:0,win:0}}),i:0,rk:shuf(R),cs:shuf(C)};LOG=[];log(&#x27;Игра началась!&#x27;);render();startTurn()}
+const draw=k=&gt;{if(!G[k].length)G[k]=shuf(k==&#x27;rk&#x27;?R:C);return G[k].pop()};
+function addR(p,n){if(n&gt;0&amp;&amp;p.st.some(s=&gt;s.t==&#x27;block&#x27;))return 0;const o=p.r;p.r=Math.max(0,Math.min(10,p.r+n));return p.r-o}
+function eff(p,e){const o=[];if(e.m){p.m+=e.m}if(e.r){const d=addR(p,e.r);if(e.r&gt;0&amp;&amp;!d)o.push(&#x27;рейтинг не вырос&#x27;)}if(e.s){const[t,a,c]=e.s;if(p.st.length&lt;2)p.st.push({t,a,c,f:1});else o.push(&#x27;уже 2 статуса — новый не применён&#x27;)}return o.join(&#x27;; &#x27;)}
+function startTurn(){G.used=0;const p=cur(),ms=[];let sk=0;p.st.forEach(s=&gt;{if(s.t==&#x27;block&#x27;)return;if(s.t==&#x27;gain&#x27;){p.m+=s.a;ms.push(&#x27;Пассивный доход &#x27;+sg(s.a))}if(s.t==&#x27;loss&#x27;){p.m-=s.a;ms.push(&#x27;Пассивный убыток −&#x27;+fmt(s.a))}if(s.t==&#x27;skip&#x27;){sk=1;ms.push(&#x27;Пропуск хода&#x27;)}s.c--});p.st=p.st.filter(s=&gt;s.t==&#x27;block&#x27;||s.c&gt;0);render();ms.forEach(m=&gt;log(p.n+&#x27;: &#x27;+m));
+if(sk)M(p.n+&#x27;: ход пропущен&#x27;,ms.join(&#x27;&lt;br&gt;&#x27;),[[&#x27;Дальше&#x27;,()=&gt;end()]]);else if(ms.length)M(p.n+&#x27;: начало хода&#x27;,ms.join(&#x27;&lt;br&gt;&#x27;),[[&#x27;Играть&#x27;]])}
+function end(){const p=cur();p.st.forEach(s=&gt;{if(s.t==&#x27;block&#x27;){if(s.f)s.f=0;else s.c--}});p.st=p.st.filter(s=&gt;s.c&gt;0);
+if(G.ps.every(x=&gt;x.fin))return result();do{G.i=(G.i+1)%G.ps.length}while(cur().fin);render();startTurn()}
+function pick(ix){beep(440,.08);const p=cur(),c=p.col+1,[t,a,b]=COLS[c][ix];
+if(t==&#x27;l&#x27;){const cost=a-(p.pr==&#x27;Разработчик&#x27;?2e4:0);if(p.m&lt;cost)return M(&#x27;Не хватает денег&#x27;,&#x27;Обучение стоит &#x27;+fmt(cost)+&#x27;, у тебя &#x27;+fmt(p.m),[[&#x27;Ок&#x27;]]);p.col=c;p.m-=cost;const g=b+(p.pr==&#x27;Музыкант&#x27;&amp;&amp;!p.mu?1:0);p.mu=1;const d=addR(p,g);log(`${p.n}: Обучение −${fmt(cost)}, ${d?&#x27;+&#x27;+d+&#x27; рейтинг&#x27;:&#x27;рейтинг не вырос&#x27;}`);return fin()}
+if(t==&#x27;w&#x27;){p.col=c;const x=a+(p.pr==&#x27;Копирайтер&#x27;?2e4:0)+bonus(p.r);p.m+=x;log(`${p.n}: Работа ${sg(x)}`);return fin()}
+if(t==&#x27;p&#x27;){p.col=c;const x=a+(p.pr==&#x27;Фотограф&#x27;?2e4:0)+bonus(p.r);p.m+=x;log(`${p.n}: Проект ${sg(x)}`);return risk()}
+p.col=c;kase()}
+const fin=()=&gt;{render();end()};
+function risk(){const p=cur(),[t,e]=draw(&#x27;rk&#x27;);const bs=[];let b=`&lt;div class=&quot;tag&quot;&gt;Карта риска&lt;/div&gt;&lt;h3&gt;${t}&lt;/h3&gt;`;
+if(p.pr==&#x27;Иллюстратор&#x27;&amp;&amp;!p.il){p.il=1;log(`${p.n}: «${t}» — не применяется (Иллюстратор)`);bs.push([&#x27;Ок&#x27;,fin]);b+=&#x27;&lt;p&gt;Иллюстратор: первая карта риска не применяется!&lt;/p&gt;&#x27;}
+else if(e.ch){b+=&#x27;&lt;p&gt;Выбери один вариант:&lt;/p&gt;&#x27;;e.ch.forEach((x,i)=&gt;bs.push([desc(x),()=&gt;{log(`${p.n}: «${t}» → ${desc(x)}`);eff(p,x);fin()}]))}
+else{b+=`&lt;p&gt;${desc(e)}&lt;/p&gt;`;bs.push([&#x27;Применить&#x27;,()=&gt;{const w=eff(p,e);log(`${p.n}: «${t}» → ${desc(e)}${w?&#x27; (&#x27;+w+&#x27;)&#x27;:&#x27;&#x27;}`);fin()}])}
+if(p.pr==&#x27;Event-менеджер&#x27;&amp;&amp;!p.rd&amp;&amp;!p.il_)bs.push([&#x27;Перетянуть (1 раз за игру)&#x27;,()=&gt;{p.rd=1;log(p.n+&#x27; перетянул карту риска&#x27;);risk()},1]);M(&#x27;⚠️ Риск&#x27;,b,bs)}
+function kase(){const p=cur(),[t,A,B]=draw(&#x27;cs&#x27;);M(&#x27;🃏 Кейс&#x27;,`&lt;h3&gt;${t}&lt;/h3&gt;&lt;p&gt;Выбери один вариант:&lt;/p&gt;`,[[&#x27;A) &#x27;+desc(A),()=&gt;ch(t,A)],[&#x27;B) &#x27;+desc(B),()=&gt;ch(t,B)]].concat(AUC.includes(t)&amp;&amp;others().length?[[&#x27;🔨 Выставить на аукцион&#x27;,()=&gt;auc(t,A,B),1]]:[]));
+function ch(t,x){const w=eff(p,x);log(`${p.n}: Кейс «${t}» → ${desc(x)}${w?&#x27; (&#x27;+w+&#x27;)&#x27;:&#x27;&#x27;}`);fin()}}
+function finish(){const p=cur(),[tx,m,r]=p.g;let bn=&#x27;&#x27;;if(!G.first){G.first=p.n;p.m+=1e5;bn=&#x27;&lt;p&gt;🥇 Первым на финише! Бонус +100 000 ₽&lt;/p&gt;&#x27;}const ok=p.m&gt;=m&amp;&amp;p.r&gt;=r;if(ok)fx();p.col=10;p.fin=1;p.win=ok;log(`${p.n}: ФИНИШ — цель ${ok?&#x27;выполнена&#x27;:&#x27;не выполнена&#x27;}`);
+M(&#x27;🏁 Финиш&#x27;,`${bn}&lt;p&gt;${p.n}: &lt;b&gt;${fmt(p.m)}&lt;/b&gt;, рейтинг &lt;b&gt;${p.r}&lt;/b&gt;&lt;/p&gt;&lt;p&gt;Цель: ${tx}&lt;/p&gt;&lt;h3 class=&quot;${ok?&#x27;ok&#x27;:&#x27;no&#x27;}&quot;&gt;${ok?&#x27;Цель выполнена — победа!&#x27;:&#x27;Цель не выполнена — проигрыш&#x27;}&lt;/h3&gt;`,[[&#x27;Дальше&#x27;,()=&gt;{render();end()}]])}
+function result(){lb();const w=G.ps.filter(p=&gt;p.win).sort((a,b)=&gt;b.r-a.r||b.m-a.m),l=G.ps.filter(p=&gt;!p.win);
+M(&#x27;🏆 Итоги&#x27;,(w.length?w.map((p,i)=&gt;`&lt;p&gt;${i?i+1+&#x27;.&#x27;:&#x27;🥇&#x27;} &lt;span class=&quot;dot&quot; style=&quot;background:${p.k}&quot;&gt;&lt;/span&gt;&lt;b&gt;${p.n}&lt;/b&gt; — ${p.pr}, рейтинг ${p.r}, ${fmt(p.m)}&lt;/p&gt;`).join(&#x27;&#x27;):&#x27;&lt;p&gt;Никто не выполнил цель 😅&lt;/p&gt;&#x27;)+(l.length?&#x27;&lt;hr&gt;&lt;div class=&quot;tag&quot;&gt;Проиграли:&lt;/div&gt;&#x27;+l.map(p=&gt;`&lt;p class=&quot;no&quot;&gt;${p.n} — ${p.g[0]} (${fmt(p.m)}, рейтинг ${p.r})&lt;/p&gt;`).join(&#x27;&#x27;):&#x27;&#x27;),[[&#x27;Играть снова&#x27;,()=&gt;{G=null;setup()}]])}
+function render(){if(!G)return;try{localStorage.setItem(&#x27;fg_save&#x27;,JSON.stringify({G,LOG}))}catch(e){}const p=cur(),nx=p.col+1;
+const st=q=&gt;q.st.map(s=&gt;({skip:&#x27;⏸&#x27;,loss:&#x27;📉&#x27;,gain:&#x27;📈&#x27;,block:&#x27;🚫&#x27;}[s.t])+s.c).join(&#x27; &#x27;)+(q.sh?&#x27; 🛡&#x27;:&#x27;&#x27;);
+const ok=p.g[1]&lt;=p.m&amp;&amp;p.g[2]&lt;=p.r;
+let h=`&lt;div class=&quot;bar&quot;&gt;${G.ps.map((q,i)=&gt;`&lt;div class=&quot;chip ${i==G.i?&#x27;on&#x27;:&#x27;&#x27;} ${q.fin?&#x27;fin&#x27;:&#x27;&#x27;}&quot;&gt;&lt;span class=&quot;dot&quot; style=&quot;background:${q.k}&quot;&gt;&lt;/span&gt;&lt;b&gt;${q.n}&lt;/b&gt;&lt;br&gt;${fmt(q.m)} · ★${q.r}&lt;br&gt;&lt;span class=&quot;tag&quot;&gt;${q.fin?(q.win?&#x27;🏁 победа&#x27;:&#x27;🏁 цель не выполнена&#x27;):q.pr+&#x27; &#x27;+st(q)}&lt;/span&gt;&lt;/div&gt;`).join(&#x27;&#x27;)}&lt;/div&gt;`;
+h+=`&lt;div class=&quot;rt&quot;&gt;&lt;span&gt;★ 0–2: +0&lt;/span&gt;&lt;span&gt;3–5: +5 000&lt;/span&gt;&lt;span&gt;6–8: +10 000&lt;/span&gt;&lt;span&gt;9–10: +15 000 ₽ к Работе и Проекту&lt;/span&gt;&lt;/div&gt;`;
+h+=`&lt;div class=&quot;board&quot;&gt;`+Array.from({length:11},(_,c)=&gt;{const pw=G.ps.filter(q=&gt;q.col==c).map(q=&gt;`&lt;span class=&quot;dot&quot; style=&quot;background:${q.k};width:16px;height:16px&quot;&gt;&lt;/span&gt;`).join(&#x27;&#x27;);
+let cells=&#x27;&#x27;;if(c==0)cells=&#x27;&lt;div class=&quot;cell&quot; style=&quot;background:#1f5a2a&quot;&gt;🏁 СТАРТ&lt;br&gt;200 000 ₽&lt;br&gt;0 рейтинга&lt;/div&gt;&#x27;;
+else if(c==10)cells=`&lt;button class=&quot;fn&quot; ${nx==10&amp;&amp;!p.fin?&#x27;onclick=&quot;finish()&quot;&#x27;:&#x27;disabled&#x27;}&gt;🏆 ФИНИШ&lt;br&gt;Проверь цель&lt;/button&gt;`;
+else cells=COLS[c].map(([t,a,b],ix)=&gt;{const cost=t==&#x27;l&#x27;?a-(p.pr==&#x27;Разработчик&#x27;?2e4:0):0,dis=!(c==nx&amp;&amp;!p.fin)||(t==&#x27;l&#x27;&amp;&amp;p.m&lt;cost);
+const L={w:`💼 Работа&lt;br&gt;+${fmt(a)}`,l:`🎓 Обучение&lt;br&gt;−${fmt(cost)}&lt;br&gt;+${b} рейтинг`,p:`💡 Проект&lt;br&gt;+${fmt(a)}&lt;br&gt;+ РИСК`,c:&#x27;🃏 Кейс&lt;br&gt;?&#x27;}[t];return`&lt;button class=&quot;cell ${t}&quot; ${dis?&#x27;disabled&#x27;:&#x27;&#x27;} onclick=&quot;pick(${ix})&quot;&gt;${L}&lt;/button&gt;`}).join(&#x27;&#x27;);
+return`&lt;div class=&quot;col ${c==nx&amp;&amp;!p.fin?&#x27;nx&#x27;:&#x27;&#x27;} ${c==5?&#x27;r5&#x27;:&#x27;&#x27;}&quot; id=&quot;c${c}&quot;&gt;&lt;div class=&quot;ch&quot;&gt;${c==0?&#x27;Старт&#x27;:c==10?&#x27;Финиш&#x27;:c+(c==5?&#x27; ⚠️ полоса риска&#x27;:&#x27; колонна&#x27;)}&lt;/div&gt;&lt;div class=&quot;pw&quot;&gt;${pw}&lt;/div&gt;${cells}&lt;/div&gt;`}).join(&#x27;&#x27;)+&#x27;&lt;/div&gt;&#x27;;
+h+=`&lt;div class=&quot;pn&quot;&gt;&lt;span class=&quot;dot&quot; style=&quot;background:${p.k}&quot;&gt;&lt;/span&gt;&lt;b&gt;Ход: ${p.n}&lt;/b&gt; — ${p.pr}&lt;br&gt;&lt;span class=&quot;tag&quot;&gt;${p.pd}&lt;/span&gt;&lt;br&gt;🎯 Цель: ${p.g[0]} &lt;b class=&quot;${ok?&#x27;ok&#x27;:&#x27;no&#x27;}&quot;&gt;${ok?&#x27;✓ сейчас выполнена&#x27;:&#x27;✗ пока нет&#x27;}&lt;/b&gt;&lt;br&gt;${p.col&lt;10?`&lt;b style=&quot;color:var(--gd)&quot;&gt;Выбери клетку в колонне ${nx&lt;10?nx:&#x27;ФИНИШ&#x27;}&lt;/b&gt;`:&#x27;&#x27;}${p.st.length?`&lt;br&gt;&lt;span class=&quot;tag&quot;&gt;Статусы: ${p.st.map(s=&gt;({skip:&#x27;пропуск хода&#x27;,loss:&#x27;убыток −&#x27;+fmt(s.a),gain:&#x27;доход +&#x27;+fmt(s.a),block:&#x27;блок рейтинга&#x27;}[s.t])+&#x27; (&#x27;+s.c+&#x27;)&#x27;).join(&#x27;, &#x27;)}&lt;/span&gt;`:&#x27;&#x27;}&lt;/div&gt;&lt;div class=&quot;pn&quot;&gt;&lt;button class=&quot;btn s&quot; onclick=&quot;rules()&quot;&gt;📖 Правила&lt;/button&gt;&lt;button class=&quot;btn s&quot; onclick=&quot;sab()&quot;&gt;😈 Подстава&lt;/button&gt;&lt;button class=&quot;btn s&quot; onclick=&quot;shield()&quot;&gt;🛡 Страховка&lt;/button&gt;&lt;button class=&quot;btn s&quot; onclick=&quot;trade()&quot;&gt;🤝 Обмен&lt;/button&gt;&lt;button class=&quot;btn s&quot; onclick=&quot;SND=!SND;render()&quot;&gt;${SND?&#x27;🔊&#x27;:&#x27;🔇&#x27;}&lt;/button&gt;&lt;/div&gt;&lt;div class=&quot;pn&quot; id=&quot;lg&quot;&gt;${LOG.map(x=&gt;&#x27;• &#x27;+x).join(&#x27;&lt;br&gt;&#x27;)}&lt;/div&gt;`;
+$(&#x27;#app&#x27;).innerHTML=h;const e=$(&#x27;#c&#x27;+Math.min(nx,10));e&amp;&amp;e.scrollIntoView({inline:&#x27;center&#x27;,block:&#x27;nearest&#x27;,behavior:&#x27;auto&#x27;})}
+let SND=true,AC;const AUC=[&#x27;Эксклюзивный заказ&#x27;,&#x27;Долгосрочный контракт&#x27;,&#x27;Срочный заказ&#x27;,&#x27;Контракт на обслуживание&#x27;],others=()=&gt;G.ps.filter((q,i)=&gt;i!=G.i&amp;&amp;!q.fin);
+function beep(f,d=.12,t=&#x27;sine&#x27;){if(!SND)return;try{AC=AC||new(window.AudioContext||window.webkitAudioContext)();const o=AC.createOscillator(),v=AC.createGain();o.type=t;o.frequency.value=f;v.gain.value=.07;o.connect(v);v.connect(AC.destination);o.start();o.stop(AC.currentTime+d)}catch(e){}}
+function fx(){beep(660,.15);setTimeout(()=&gt;beep(880,.15),150);setTimeout(()=&gt;beep(1175,.35),300);for(let i=0;i&lt;70;i++){const e=document.createElement(&#x27;i&#x27;);e.style.cssText=`position:fixed;top:-12px;left:${Math.random()*100}vw;width:8px;height:12px;background:hsl(${Math.random()*360},85%,60%);z-index:99;animation:fall ${2+Math.random()*2}s linear forwards`;document.body.appendChild(e);setTimeout(()=&gt;e.remove(),4200)}}
+function lb(){const w=G.ps.filter(p=&gt;p.win).map(p=&gt;({n:p.n,pr:p.pr,r:p.r,m:p.m}));try{const a=JSON.parse(localStorage.getItem(&#x27;fg_lb&#x27;)||&#x27;[]&#x27;).concat(w);a.sort((x,y)=&gt;y.r-x.r||y.m-x.m);localStorage.setItem(&#x27;fg_lb&#x27;,JSON.stringify(a.slice(0,50)));localStorage.removeItem(&#x27;fg_save&#x27;)}catch(e){}try{const u=parent.CFG&amp;&amp;parent.CFG.LB_URL;if(u&amp;&amp;w.length)fetch(u,{method:&#x27;POST&#x27;,mode:&#x27;no-cors&#x27;,body:JSON.stringify(w)})}catch(e){}}
+function rules(){M(&#x27;📖 Правила&#x27;,&#x27;&lt;p&gt;Цель: дойти до финиша с выполненной целью.&lt;/p&gt;&lt;p&gt;Ход: статусы → пропуск → следующая колонна → клетка → действие. Работа и Проект дают деньги (+5 000 / 10 000 / 15 000 ₽ за рейтинг 3–5 / 6–8 / 9–10). Обучение: платишь, получаешь рейтинг. Проект → карта риска, Кейс → выбор A/B.&lt;/p&gt;&lt;p&gt;&lt;b&gt;Новое:&lt;/b&gt;&lt;br&gt;😈 Подстава (50 000 ₽, 1 раз за ход): сопернику −1 рейтинг или пропуск хода.&lt;br&gt;🛡 Страховка (40 000 ₽) отменяет одну подставу.&lt;br&gt;🤝 Обмен: купить у соседа 1 рейтинг за деньги (нужно его согласие).&lt;br&gt;🔨 Аукцион за самые выгодные кейсы.&lt;br&gt;🥇 Первый на финише получает +100 000 ₽.&lt;/p&gt;&lt;p&gt;Побеждает выполнивший цель: выше рейтинг, потом больше денег.&lt;/p&gt;&#x27;,[[&#x27;Понятно&#x27;]])}
+function sab(){const p=cur();if(G.used)return M(&#x27;Подстава&#x27;,&#x27;Только 1 подстава за ход&#x27;,[[&#x27;Ок&#x27;]]);if(p.m&lt;5e4)return M(&#x27;Подстава&#x27;,&#x27;Нужно 50 000 ₽&#x27;,[[&#x27;Ок&#x27;]]);const bs=[];others().forEach(q=&gt;[[&#x27;−1 рейтинг&#x27;,{r:-1}],[&#x27;пропуск хода&#x27;,{s:[&#x27;skip&#x27;,0,1]}]].forEach(([l,e])=&gt;bs.push([`${q.n}: ${l}`,()=&gt;{p.m-=5e4;G.used=1;if(q.sh){q.sh=0;log(`${p.n} подставил ${q.n}, но Страховка спасла`)}else{eff(q,e);log(`${p.n} подставил ${q.n}: ${l}`)}beep(200,.3,&#x27;sawtooth&#x27;);render()}])));bs.push([&#x27;Отмена&#x27;,()=&gt;{},1]);M(&#x27;😈 Подстава (−50 000 ₽)&#x27;,&#x27;Выбери жертву и удар:&#x27;,bs)}
+function shield(){const p=cur();if(p.sh)return M(&#x27;Страховка&#x27;,&#x27;Она у тебя уже есть&#x27;,[[&#x27;Ок&#x27;]]);if(p.m&lt;4e4)return M(&#x27;Страховка&#x27;,&#x27;Нужно 40 000 ₽&#x27;,[[&#x27;Ок&#x27;]]);p.m-=4e4;p.sh=1;log(p.n+&#x27; купил Страховку&#x27;);beep(700);render()}
+function trade(){const p=cur();M(&#x27;🤝 Обмен: купить рейтинг&#x27;,`&lt;p class=&quot;tag&quot;&gt;Ты платишь деньги, получаешь +1 рейтинг, партнёр теряет 1. Цену обсудите вслух.&lt;/p&gt;&lt;select id=&quot;tq&quot;&gt;${G.ps.map((q,i)=&gt;i!=G.i&amp;&amp;!q.fin&amp;&amp;q.r&gt;0?`&lt;option value=&quot;${i}&quot;&gt;${q.n} (★${q.r})&lt;/option&gt;`:&#x27;&#x27;).join(&#x27;&#x27;)}&lt;/select&gt;&lt;input id=&quot;tp&quot; type=&quot;number&quot; min=&quot;0&quot; step=&quot;10000&quot; value=&quot;50000&quot;&gt;`,[[&#x27;Предложить&#x27;,()=&gt;{const q=G.ps[+$(&#x27;#tq&#x27;).value],pr=+$(&#x27;#tp&#x27;).value||0;if(!q||p.m&lt;pr||p.r&gt;=10)return M(&#x27;Обмен невозможен&#x27;,&#x27;Нет денег, нет партнёра с рейтингом или у тебя максимум.&#x27;,[[&#x27;Ок&#x27;]]);M(&#x27;Сделка для &#x27;+q.n,`${p.n} платит &lt;b&gt;${fmt(pr)}&lt;/b&gt; за 1 твой рейтинг. Согласен?`,[[&#x27;Согласен&#x27;,()=&gt;{p.m-=pr;q.m+=pr;addR(p,1);addR(q,-1);log(`Обмен: ${p.n} купил рейтинг у ${q.n} за ${fmt(pr)}`);beep(600);render()}],[&#x27;Отказ&#x27;,()=&gt;{},1]])}],[&#x27;Отмена&#x27;,()=&gt;{},1]])}
+function auc(t,A,B){const ps=G.ps.filter(q=&gt;!q.fin);let i=0,best=null,bid=0;const nx=()=&gt;{if(i&gt;=ps.length){if(!best){log(&#x27;Аукцион «&#x27;+t+&#x27;»: ставок нет&#x27;);return fin()}best.m-=bid;log(`Аукцион «${t}»: ${best.n} за ${fmt(bid)}`);return M(&#x27;🔨 Продано!&#x27;,`${best.n} купил «${t}» за ${fmt(bid)}. Выбери вариант:`,[[&#x27;A) &#x27;+desc(A),()=&gt;ap(best,t,A)],[&#x27;B) &#x27;+desc(B),()=&gt;ap(best,t,B)]])}const q=ps[i];M(&#x27;🔨 Аукцион: &#x27;+t,`&lt;p&gt;&lt;b&gt;${q.n}&lt;/b&gt;, у тебя ${fmt(q.m)}. Лучшая ставка: ${best?fmt(bid)+&#x27; (&#x27;+best.n+&#x27;)&#x27;:&#x27;нет&#x27;}&lt;/p&gt;&lt;p class=&quot;tag&quot;&gt;A) ${desc(A)}&lt;br&gt;B) ${desc(B)}&lt;/p&gt;&lt;input id=&quot;ab&quot; type=&quot;number&quot; min=&quot;0&quot; step=&quot;10000&quot; value=&quot;${bid+1e4}&quot;&gt;`,[[&#x27;Поставить&#x27;,()=&gt;{const v=+$(&#x27;#ab&#x27;).value||0;if(v&gt;bid&amp;&amp;v&lt;=q.m){bid=v;best=q}i++;nx()}],[&#x27;Пас&#x27;,()=&gt;{i++;nx()},1]])};nx()}
+function ap(q,t,x){eff(q,x);log(`${q.n}: Кейс «${t}» → ${desc(x)}`);fin()}
+setup();
+&lt;/script&gt;&lt;/body&gt;&lt;/html&gt;
+"></iframe>
+<h2 id="lb">🏆 Рейтинг игроков</h2><div class="c" id="lbox"></div><p class="tag" id="lbn"></p><h2 id="support">💬 Поддержка</h2><div class="c"><select id="fk"><option>Предложение</option><option>Жалоба</option><option>Ошибка в игре</option></select><input id="fn" placeholder="Имя (необязательно)"><textarea id="ft" rows="4" placeholder="Что улучшить или что сломалось?"></textarea><button class="btn" onclick="sendFb()">Отправить</button><div id="fs" class="tag"></div></div></main><footer>Передавайте устройство по кругу. Хорошей игры!</footer><script>
 var CFG={EMAIL:'kodincevmark6@gmail.com',FORM_URL:'',LB_URL:''};
-let currentMode = 'normal';
-let campaignData = { current: 1, score: 0 };
-let customSettings = null;
-
 function esc(s){return String(s).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
-
-function toggleMenu() {
-  document.getElementById('menuDropdown').classList.toggle('show');
-}
-
-document.addEventListener('click', (e) => {
-  if (!e.target.closest('.menu-btn') && !e.target.closest('.menu-dropdown')) {
-    document.getElementById('menuDropdown').classList.remove('show');
-  }
-});
-
-function setMode(mode) {
-  currentMode = mode;
-  document.querySelectorAll('.menu-item').forEach(el => el.classList.remove('active'));
-  event.target.classList.add('active');
-  document.getElementById('menuDropdown').classList.remove('show');
-  
-  const badge = document.getElementById('modeBadge');
-  const campaignInfo = document.getElementById('campaignInfo');
-  
-  if (mode === 'normal') {
-    badge.textContent = 'Обычный';
-    campaignInfo.style.display = 'none';
-    customSettings = null;
-  } else if (mode === 'campaign') {
-    badge.textContent = 'Кампания';
-    campaignInfo.style.display = 'block';
-    campaignData = JSON.parse(localStorage.getItem('campaign') || '{"current":1,"score":0}');
-    document.getElementById('campaignCurrent').textContent = campaignData.current;
-    document.getElementById('campaignScore').textContent = campaignData.score;
-    customSettings = null;
-  } else if (mode === 'hardcore') {
-    badge.textContent = 'Хардкор';
-    campaignInfo.style.display = 'none';
-    customSettings = { hardcore: true };
-  } else if (mode === 'blitz') {
-    badge.textContent = 'Блиц';
-    campaignInfo.style.display = 'none';
-    customSettings = { columns: 5 };
-  }
-  
-  sendSettingsToGame();
-}
-
-function openCustom() {
-  document.getElementById('customModal').classList.add('show');
-  document.getElementById('menuDropdown').classList.remove('show');
-}
-
-function closeCustom() {
-  document.getElementById('customModal').classList.remove('show');
-}
-
-function applyCustom() {
-  customSettings = {
-    money: +document.getElementById('customMoney').value,
-    columns: +document.getElementById('customCols').value,
-    bonus1: +document.getElementById('customBonus1').value,
-    bonus2: +document.getElementById('customBonus2').value,
-    bonus3: +document.getElementById('customBonus3').value
-  };
-  currentMode = 'custom';
-  document.getElementById('modeBadge').textContent = 'Кастом';
-  document.getElementById('campaignInfo').style.display = 'none';
-  closeCustom();
-  sendSettingsToGame();
-}
-
-function openRules() {
-  document.getElementById('rulesContent').innerHTML = document.querySelector('.rules-section').innerHTML;
-  document.getElementById('rulesModal').classList.add('show');
-  document.getElementById('menuDropdown').classList.remove('show');
-}
-
-function closeRules() {
-  document.getElementById('rulesModal').classList.remove('show');
-}
-
-function sendSettingsToGame() {
-  const frame = document.getElementById('gameFrame');
-  frame.contentWindow.postMessage({
-    type: 'SETTINGS',
-    mode: currentMode,
-    settings: customSettings,
-    campaign: campaignData
-  }, '*');
-}
-
-window.addEventListener('message', (e) => {
-  if (e.data.type === 'CAMPAIGN_UPDATE') {
-    campaignData = e.data.campaign;
-    localStorage.setItem('campaign', JSON.stringify(campaignData));
-    document.getElementById('campaignCurrent').textContent = campaignData.current;
-    document.getElementById('campaignScore').textContent = campaignData.score;
-  }
-});
-
 function showLB(a){var b=document.getElementById('lbox');b.innerHTML=a.length?'<table style="width:100%;border-collapse:collapse">'+a.slice(0,10).map(function(x,i){return'<tr><td>'+(i<3?['🥇','🥈','🥉'][i]:i+1)+'</td><td><b>'+esc(x.n)+'</b></td><td>'+esc(x.pr||'')+'</td><td>★'+(+x.r||0)+'</td><td>'+(+x.m||0).toLocaleString('ru-RU')+' ₽</td></tr>'}).join('')+'</table>':'Пока нет результатов. Выиграй партию — и попадёшь в таблицу!'}
 function drawLB(){var a=[];try{a=JSON.parse(localStorage.getItem('fg_lb')||'[]')}catch(e){}document.getElementById('lbn').textContent=CFG.LB_URL?'':'Сейчас таблица хранится на этом устройстве.';if(CFG.LB_URL){fetch(CFG.LB_URL).then(function(r){return r.json()}).then(showLB).catch(function(){showLB(a)})}else showLB(a)}
 drawLB();setInterval(drawLB,5000);
-</script>
-
-<script>
-const frame = document.getElementById('gameFrame');
-const gameHTML = `<!DOCTYPE html><html lang="ru"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover"><style>:root{color-scheme:dark;--bg:#14110d;--pn:#221c15;--tx:#f3ead8;--mu:#a89c85;--gd:#e8b84a;--w:#2f7be0;--l:#35a445;--p:#9a3fd0;--c:#e8741c;--r:#c8322d;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--tx);font:15px/1.4 system-ui,sans-serif}h1{font-size:20px;margin:10px 12px;color:var(--gd)}.pn{background:var(--pn);border-radius:12px;margin:8px;padding:10px}.bar{display:flex;gap:6px;overflow-x:auto;padding:0 8px}.chip{flex:0 0 auto;background:var(--pn);border:2px solid transparent;border-radius:10px;padding:6px 9px;font-size:13px;min-width:112px}.chip.on{border-color:var(--gd)}.chip.fin{opacity:.55}.dot{display:inline-block;width:12px;height:12px;border-radius:50%;border:1px solid #fff;margin-right:5px}.rt{display:flex;gap:6px;font-size:12px;overflow-x:auto;padding:0 8px;color:var(--mu)}.rt span{white-space:nowrap;background:var(--pn);padding:3px 8px;border-radius:8px}.board{display:flex;gap:6px;overflow-x:auto;padding:8px;scroll-snap-type:x proximity}.col{flex:0 0 108px;display:flex;flex-direction:column;gap:5px;background:var(--pn);border-radius:10px;padding:6px;scroll-snap-align:center;opacity:.55}.col.nx{opacity:1;outline:2px solid var(--gd)}.col.r5{background:#3a1414}.ch{text-align:center;font-size:12px;font-weight:700}.pw{min-height:20px;display:flex;flex-wrap:wrap;gap:3px;justify-content:center}.cell{border:0;border-radius:8px;color:#fff;padding:8px 4px;font:600 12px/1.25 system-ui;text-align:center;min-height:64px;flex:1}.cell.w{background:var(--w)}.cell.l{background:var(--l)}.cell.p{background:var(--p)}.cell.c{background:var(--c)}.cell:disabled{filter:grayscale(.6) brightness(.7)}.nx .cell:not(:disabled){box-shadow:0 0 0 2px #fff6}.fn{background:linear-gradient(#e8b84a,#a8791d);color:#222;border:0;border-radius:8px;font-weight:800;padding:8px 4px;flex:1}.btn{background:var(--gd);color:#222;border:0;border-radius:10px;padding:11px 16px;font:700 15px system-ui;margin:4px 4px 0 0}.btn.s{background:#463c2d;color:var(--tx)}input{background:#14110d;color:var(--tx);border:1px solid #5a4d3a;border-radius:8px;padding:9px;font-size:15px;width:100%;margin:4px 0}#lg{font-size:12px;color:var(--mu);max-height:96px;overflow:auto}#md{position:fixed;inset:0;background:#000b;display:none;align-items:center;justify-content:center;padding:16px;z-index:9}#md>div{background:var(--pn);border:2px solid var(--gd);border-radius:14px;padding:16px;max-width:420px;width:100%;max-height:90%;overflow:auto}.tag{font-size:12px;color:var(--mu)}@keyframes fall{to{transform:translateY(105vh) rotate(720deg)}}@keyframes pop{from{transform:scale(.8);opacity:0}}#mb{animation:pop .25s}.pw .dot{animation:pop .4s}select{width:100%;padding:9px;background:#14110d;color:var(--tx);border:1px solid #5a4d3a;border-radius:8px}.ok{color:#6fe08a}.no{color:#ff7b72}.event-banner{background:linear-gradient(135deg,#9a3fd0,#e8741c);color:#fff;padding:10px;border-radius:10px;margin:8px;text-align:center;font-weight:700;animation:pop .4s}</style></head><body><h1>💼 Финансовая игра</h1><div id="app"></div><div id="md"><div id="mb"></div></div><script>
-const $=s=>document.querySelector(s),fmt=n=>(n<0?'−':'')+Math.abs(n).toLocaleString('ru-RU').replace(/\\s/g,' ')+ ' ₽',sg=n=>(n>0?'+':'')+fmt(n);
-const COLORS=['#e0372f','#2f6fe0','#35a445','#e8c21c','#9a3fd0','#666'],NAMES=['Красный','Синий','Зелёный','Жёлтый','Фиолетовый','Чёрный'];
-const PRO=[['Event-менеджер','1 раз за игру можно перетянуть карту риска'],['Фотограф','+20 000 ₽ к каждому Проекту'],['Музыкант','первое Обучение даёт +1 рейтинг сверх'],['Дизайнер','стартует с рейтингом 1'],['Разработчик','Обучение дешевле на 20 000 ₽'],['Копирайтер','+20 000 ₽ к каждой Работе'],['Иллюстратор','первая карта риска не применяется'],['Продюсер','стартует с 220 000 ₽']];
-const GOAL=[['Рейтинг 7+',0,7],['Рейтинг 8+',0,8],['Рейтинг 9+',0,9],['Не менее 1 000 000 ₽',1e6,0],['Не менее 700 000 ₽ и рейтинг 4+',7e5,4],['Не менее 500 000 ₽ и рейтинг 6+',5e5,6],['Не менее 600 000 ₽ и рейтинг 5+',6e5,5],['Не менее 400 000 ₽ и рейтинг 7+',4e5,7]];
-
-const COLS_NORMAL={1:[['w',1e5],['p',15e4]],2:[['w',1e5],['l',5e4,1],['c']],3:[['w',1e5],['p',15e4]],4:[['w',1e5],['l',8e4,2],['c']],5:[['p',15e4]],6:[['w',1e5],['l',1e5,2],['c']],7:[['w',1e5],['p',15e4]],8:[['w',15e4],['l',13e4,3],['c']],9:[['w',15e4],['l',15e4,3],['p',2e5]]};
-const COLS_BLITZ={1:[['w',1e5],['p',15e4]],2:[['w',1e5],['l',5e4,1],['c']],3:[['p',15e4]],4:[['w',1e5],['l',1e5,2],['c']],5:[['w',15e4],['l',15e4,3],['p',2e5]]};
-
-const R_BASE=[['Клиент недоволен',{r:-2}],['Заказчик рекомендовал',{r:2}],['Проект удачнее ожиданий',{m:1e5}],['Превышен бюджет',{m:-8e4}],['Форс-мажор',{m:-5e4,r:-1}],['Идея стала вирусной',{m:8e4,r:1}],['Клиент просит правки',{ch:[{m:-5e4},{r:-1}]}],['Новый заказчик',{m:6e4,r:1}],['Переработка',{m:8e4,r:-1}],['Удачный питч',{r:1}],['Партнёр подвёл',{r:-1}],['Кейс в портфолио',{r:1}],['Задержка оплаты',{m:-6e4}],['Премия',{m:1e5}],['Критика в соцсетях',{r:-1}],['Упоминание в издании',{r:1}],['Срочный заказ',{ch:[{m:12e4},{r:1}]}],['Клиент ушёл к конкуренту',{m:-1e5}],['Проект закрыт досрочно',{m:6e4,r:-1}],['Приглашение на конференцию',{m:3e4,r:1}],['Выгорание',{s:['skip',0,1]}],['Юридический спор',{s:['loss',4e4,2]}],['Творческий кризис',{s:['block',0,2]}],['Профессиональный застой',{r:-1,s:['skip',0,1]}]];
-
-const R_NEW=[['Судебный иск',{ch:[{m:-1e5},{r:-2}]}],['Вирусный ролик',{m:12e4,r:-1}],['Клиент-миллионер',{m:2e5,s:['loss',5e4,1]}],['Выгорание команды',{s:['skip',0,2]}],['Инвестиции в стартап',{ch:[{m:15e4},{m:-8e4}]}],['Кража идеи',{r:-3}],['Премия от государства',{m:15e4}],['Налоговая проверка',{m:-8e4}],['Рекламный контракт',{m:1e5,r:1}],['Потеря портфолио',{r:-2}],['Скандал с клиентом',{r:-1,m:-5e4}],['Успешный нетворкинг',{r:1}],['Дефолт заказчика',{m:-12e4}],['Трендовый проект',{m:18e4,r:-2}],['Менторство',{r:2,m:-1e5}],['Пассивный доход от курса',{s:['gain',4e4,3]}],['Блокировка аккаунта',{s:['skip',0,1]}],['Инсайдерская информация',{m:1e5,r:-1}],['Фортуна улыбается',{m:15e4,r:1}],['Чёрная полоса',{m:-5e4,r:-1}]];
-
-const R=[...R_BASE,...R_NEW];
-
-const C=[['Срочный заказ',{m:15e4,r:-1},{r:1}],['Курс повышения',{m:-1e5,r:2},{}],['Скидка старому клиенту',{m:6e4,r:1},{m:12e4,r:-1}],['Подработка на выходных',{m:8e4,r:-1},{r:1}],['Новое оборудование',{m:-15e4,r:2},{}],['Конференция',{m:-5e4,r:1},{m:8e4}],['Долгосрочный контракт',{m:2e5,r:-2},{r:1}],['Разделить заказ с партнёром',{m:12e4,r:-1},{m:6e4,r:1}],['Бартер вместо оплаты',{m:-5e4,r:1},{m:1e5,r:-1}],['Помощь молодого специалиста',{m:4e4,r:1},{m:1e5,r:-1}],['Мастер-класс',{m:-8e4,r:2},{m:5e4}],['Бесплатные правки',{m:4e4,r:-1},{r:1}],['Эксклюзивный заказ',{m:25e4,r:-2},{r:1}],['Онлайн-курс за рубежом',{m:-18e4,r:3},{}],['Объединение для тендера',{m:1e5,r:1},{m:4e4,r:-1}],['Написать книгу',{m:-5e4,r:2},{m:1e5}],['Контракт на обслуживание',{s:['gain',6e4,3]},{m:15e4}],['Отпуск или подработка',{r:1,s:['skip',0,1]},{m:15e4,s:['loss',4e4,2]}]];
-
-const EVENTS=[['Экономический кризис',(ps)=>{ps.forEach(p=>p.m=Math.floor(p.m*0.9));return'Все теряют 10% денег'}],['Бум на рынке',(ps)=>{ps.forEach(p=>p.m+=5e4);return'Все получают +50 000 ₽'}],['Новые технологии',(ps)=>{ps.forEach(p=>{if(!p.st.some(s=>s.t==='tech'))p.st.push({t:'tech',a:3e4,c:2,f:0})});return'Проекты дают +30 000 ₽ бонус (2 хода)'}],['Скандал в индустрии',(ps)=>{ps.forEach(p=>p.r=Math.max(0,p.r-1));return'Все теряют 1 рейтинг'}]];
-
-const shuf=a=>{a=[...a];for(let i=a.length;i--;){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a};
-let BONUS=[5e3,1e4,15e3];
-const bonus=r=>r>=9?BONUS[2]:r>=6?BONUS[1]:r>=3?BONUS[0]:0;
-const desc=e=>{if(!e||!Object.keys(e).length)return'ничего';const o=[];if(e.m)o.push(sg(e.m));if(e.r)o.push((e.r>0?'+':'−')+Math.abs(e.r)+' рейтинг');if(e.s){const[t,a,c]=e.s;o.push(t=='skip'?'пропуск хода':t=='block'?\\`блокировка рейтинга (\\${c} хода)\\`:t=='gain'?\\`пассивный доход +\\${fmt(a)} (\\${c} хода)\\`:t=='tech'?\\`бонус к проектам +\\${fmt(a)} (\\${c} хода)\\`:\\`пассивный убыток −\\${fmt(a)} (\\${c} хода)\\`)}return o.join(', ')};
-let G,LOG=[],SETTINGS={mode:'normal',settings:null,campaign:null};const cur=()=>G.ps[G.i],log=t=>{LOG.unshift(t);LOG=LOG.slice(0,30)};
-function M(t,b,btns){$('#mb').innerHTML=\\`<h3 style="margin:0 0 8px;color:var(--gd)">\\${t}</h3><div>\\${b}</div><div style="margin-top:10px" id="mbt"></div>\\`;btns.forEach(([l,f,s])=>{const x=document.createElement('button');x.className='btn'+(s?' s':'');x.textContent=l;x.onclick=()=>{$('#md').style.display='none';f&&f()};$('#mbt').appendChild(x)});$('#mb').style.animation='none';void $('#mb').offsetWidth;$('#mb').style.animation='';beep(520,.08);$('#md').style.display='flex'}
-function setup(){let n=3,sv=null;if(!SETTINGS.settings||!SETTINGS.settings.hardcore){try{sv=localStorage.getItem('fg_save')}catch(e){}}const draw=()=>{$('#app').innerHTML=\\`<div class="pn">\\${sv?'<button class="btn" onclick="resume()">▶ Продолжить сохранённую партию</button><hr>':''}<b>Сколько игроков?</b><div>\\${[2,3,4,5,6].map(k=>\\`<button class="btn \\${k==n?'':'s'}" onclick="setN(\\${k})">\\${k}</button>\\`).join('')}</div><div style="margin-top:8px">\\${Array.from({length:n},(_,i)=>\\`<label class="tag"><span class="dot" style="background:\\${COLORS[i]}"></span>Игрок \\${i+1}</label><input id="n\\${i}" value="\\${NAMES[i]}" maxlength="14">\\`).join('')}</div><button class="btn" onclick="go(\\${n})" style="margin-top:10px">Начать игру</button><p class="tag">Играем по очереди на одном устройстве. Каждому случайно достанется профессия и цель (открыто). Дойди до ФИНИША с выполненной целью!</p></div>\\`};window.setN=k=>{n=k;draw()};window.resume=()=>{try{const o=JSON.parse(sv);G=o.G;LOG=o.LOG;render()}catch(e){}};draw()}
-function go(n){const pr=shuf(PRO),gl=shuf(GOAL);const startMoney=SETTINGS.settings&&SETTINGS.settings.money?SETTINGS.settings.money:2e5;const cols=SETTINGS.settings&&SETTINGS.settings.columns?SETTINGS.settings.columns:10;G={ps:Array.from({length:n},(_,i)=>{const nm=$('#n'+i).value.trim()||NAMES[i],pro=pr[i];return{n:nm,col:i*0,k:COLORS[i],pr:pro[0],pd:pro[1],g:gl[i],m:pro[0]=='Продюсер'?22e4:startMoney,r:pro[0]=='Дизайнер'?1:0,st:[],fin:0,win:0}}),i:0,rk:shuf(R),cs:shuf(C),turnCount:0,maxCols:cols};LOG=[];log('Игра началась!');render();startTurn()}
-const draw=k=>{if(!G[k].length)G[k]=shuf(k=='rk'?R:C);return G[k].pop()};
-function addR(p,n){if(n>0&&p.st.some(s=>s.t=='block'))return 0;const o=p.r;p.r=Math.max(0,Math.min(10,p.r+n));return p.r-o}
-function eff(p,e){const o=[];if(e.m){p.m+=e.m}if(e.r){const d=addR(p,e.r);if(e.r>0&&!d)o.push('рейтинг не вырос')}if(e.s){const[t,a,c]=e.s;if(p.st.length<2)p.st.push({t,a,c,f:1});else o.push('уже 2 статуса — новый не применён')}return o.join('; ')}
-function startTurn(){G.used=0;const p=cur(),ms=[];let sk=0;p.st.forEach(s=>{if(s.t=='block')return;if(s.t=='gain'){p.m+=s.a;ms.push('Пассивный доход '+sg(s.a))}if(s.t=='loss'){p.m-=s.a;ms.push('Пассивный убыток −'+fmt(s.a))}if(s.t=='skip'){sk=1;ms.push('Пропуск хода')}s.c--});p.st=p.st.filter(s=>s.t=='block'||s.c>0);
-G.turnCount++;if(G.turnCount%3===0&&G.turnCount>0){const ev=EVENTS[Math.floor(Math.random()*EVENTS.length)];const msg=ev[1](G.ps);log('🌪 '+ev[0]+': '+msg);ms.push('🌪 '+ev[0]+': '+msg)}
-render();ms.forEach(m=>log(p.n+': '+m));
-if(sk)M(p.n+': ход пропущен',ms.join('<br>'),[['Дальше',()=>end()]]);else if(ms.length)M(p.n+': начало хода',ms.join('<br>'),[['Играть']])}
-function end(){const p=cur();p.st.forEach(s=>{if(s.t=='block'){if(s.f)s.f=0;else s.c--}});p.st=p.st.filter(s=>s.c>0);
-if(G.ps.every(x=>x.fin))return result();do{G.i=(G.i+1)%G.ps.length}while(cur().fin);render();startTurn()}
-function pick(ix){beep(440,.08);const p=cur(),c=p.col+1,COLS=G.maxCols===5?COLS_BLITZ:COLS_NORMAL;const[t,a,b]=COLS[c][ix];
-if(t=='l'){const cost=a-(p.pr=='Разработчик'?2e4:0);if(p.m<cost)return M('Не хватает денег','Обучение стоит '+fmt(cost)+', у тебя '+fmt(p.m),[['Ок']]);p.col=c;p.m-=cost;const g=b+(p.pr=='Музыкант'&&!p.mu?1:0);p.mu=1;const d=addR(p,g);log(\\`\\${p.n}: Обучение −\\${fmt(cost)}, \\${d?'+'+d+' рейтинг':'рейтинг не вырос'}\\`);return fin()}
-if(t=='w'){p.col=c;const x=a+(p.pr=='Копирайтер'?2e4:0)+bonus(p.r);p.m+=x;log(\\`\\${p.n}: Работа \\${sg(x)}\\`);return fin()}
-if(t=='p'){p.col=c;const techBonus=p.st.find(s=>s.t==='tech')?3e4:0;const x=a+(p.pr=='Фотограф'?2e4:0)+bonus(p.r)+techBonus;p.m+=x;log(\\`\\${p.n}: Проект \\${sg(x)}\\`);return risk()}
-p.col=c;kase()}
-const fin=()=>{render();end()};
-function risk(){const p=cur(),[t,e]=draw('rk');const bs=[];let b=\\`<div class="tag">Карта риска</div><h3>\\${t}</h3>\\`;
-if(p.pr=='Иллюстратор'&&!p.il){p.il=1;log(\\`\\${p.n}: «\\${t}» — не применяется (Иллюстратор)\\`);bs.push(['Ок',fin]);b+='<p>Иллюстратор: первая карта риска не применяется!</p>'}
-else if(e.ch){b+='<p>Выбери один вариант:</p>';e.ch.forEach((x,i)=>bs.push([desc(x),()=>{log(\\`\\${p.n}: «\\${t}» → \\${desc(x)}\\`);eff(p,x);fin()}]))}
-else{b+=\\`<p>\\${desc(e)}</p>\\`;bs.push(['Применить',()=>{const w=eff(p,e);log(\\`\\${p.n}: «\\${t}» → \\${desc(e)}\\${w?' ('+w+')':''}\\`);fin()}])}
-if(p.pr=='Event-менеджер'&&!p.rd&&!p.il_)bs.push(['Перетянуть (1 раз за игру)',()=>{p.rd=1;log(p.n+' перетянул карту риска');risk()},1]);M('⚠️ Риск',b,bs)}
-function kase(){const p=cur(),[t,A,B]=draw('cs');M('🃏 Кейс',\\`<h3>\\${t}</h3><p>Выбери один вариант:</p>\\`,[['A) '+desc(A),()=>{eff(p,A);log(\\`\\${p.n}: Кейс «\\${t}» → A\\`);fin()}],['B) '+desc(B),()=>{eff(p,B);log(\\`\\${p.n}: Кейс «\\${t}» → B\\`);fin()}]]);}
-function finish(){const p=cur(),[tx,m,r]=p.g;let bn='';if(!G.first){G.first=p.n;p.m+=1e5;bn='<p>🥇 Первым на финише! Бонус +100 000 ₽</p>'}const ok=p.m>=m&&p.r>=r;if(ok)fx();p.col=10;p.fin=1;p.win=ok;log(\\`\\${p.n}: ФИНИШ — цель \\${ok?'выполнена':'не выполнена'}\\`);
-M('🏁 Финиш',\\`\\${bn}<p>\\${p.n}: <b>\\${fmt(p.m)}</b>, рейтинг <b>\\${p.r}</b></p><p>Цель: \\${tx}</p><h3 class="\\${ok?'ok':'no'}">\\${ok?'Цель выполнена — победа!':'Цель не выполнена — проигрыш'}</h3>\\`,[['Дальше',()=>{render();end()}]])}
-function result(){lb();const w=G.ps.filter(p=>p.win).sort((a,b)=>b.r-a.r||b.m-a.m),l=G.ps.filter(p=>!p.win);
-if(SETTINGS.mode==='campaign'&&w.length>0){campaignData.current++;campaignData.score+=w[0].r*1000+w[0].m/1000;window.parent.postMessage({type:'CAMPAIGN_UPDATE',campaign:campaignData},'*');}
-M('🏆 Итоги',(w.length?w.map((p,i)=>\\`<p>\\${i?i+1+'.':'🥇'} <span class="dot" style="background:\\${p.k}"></span><b>\\${p.n}</b> — \\${p.pr}, рейтинг \\${p.r}, \\${fmt(p.m)}</p>\\`).join(''):'<p>Никто не выполнил цель 😅</p>')+(l.length?'<hr><div class="tag">Проиграли:</div>'+l.map(p=>\\`<p class="no">\\${p.n} — \\${p.g[0]} (\\${fmt(p.m)}, рейтинг \\${p.r})</p>\\`).join(''):''),[['Играть снова',()=>{G=null;setup()}]])}
-function render(){if(!G)return;try{localStorage.setItem('fg_save',JSON.stringify({G,LOG}))}catch(e){}const p=cur(),nx=p.col+1;
-const st=q=>q.st.map(s=>({skip:'⏸',loss:'📉',gain:'📈',block:'🚫',tech:'🔧'}[s.t])+s.c).join(' ')+(q.sh?' 🛡':'');
-const ok=p.g[1]<=p.m&&p.g[2]<=p.r;
-let h=\\`<div class="bar">\\${G.ps.map((q,i)=>\\`<div class="chip \\${i==G.i?'on':''} \\${q.fin?'fin':''}"><span class="dot" style="background:\\${q.k}"></span><b>\\${q.n}</b><br>\\${fmt(q.m)} · ★\\${q.r}<br><span class="tag">\\${q.fin?(q.win?'🏁 победа':'🏁 цель не выполнена'):q.pr+' '+st(q)}</span></div>\\`).join('')}</div>\\`;
-h+=\\`<div class="rt"><span>★ 0–2: +0</span><span>3–5: +\\${BONUS[0].toLocaleString('ru-RU')}</span><span>6–8: +\\${BONUS[1].toLocaleString('ru-RU')}</span><span>9–10: +\\${BONUS[2].toLocaleString('ru-RU')} ₽ к Работе и Проекту</span></div>\\`;
-h+=\\`<div class="board">\\`+Array.from({length:11},(_,c)=>{const pw=G.ps.filter(q=>q.col==c).map(q=>\\`<span class="dot" style="background:\\${q.k};width:16px;height:16px"></span>\\`).join('');
-let cells='';if(c==0)cells='<div class="cell" style="background:#1f5a2a">🏁 СТАРТ<br>200 000 ₽<br>0 рейтинга</div>';
-else if(c==10)cells=\\`<button class="fn" \\${nx==10&&!p.fin?'onclick="finish()"':'disabled'}>🏆 ФИНИШ<br>Проверь цель</button>\\`;
-else{const COLS=G.maxCols===5?COLS_BLITZ:COLS_NORMAL;if(!COLS[c]){cells='';return\\`<div class="col" id="c\\${c}"></div>\\`}
-cells=COLS[c].map(([t,a,b],ix)=>{const cost=t=='l'?a-(p.pr=='Разработчик'?2e4:0):0,dis=!(c==nx&&!p.fin)||(t=='l'&&p.m<cost);
-const L={w:\\`💼 Работа<br>+\\${fmt(a)}\\`,l:\\`🎓 Обучение<br>−\\${fmt(cost)}<br>+\\${b} рейтинг\\`,p:\\`💡 Проект<br>+\\${fmt(a)}<br>+ РИСК\\`,c:'🃏 Кейс<br>?'}[t];return\\`<button class="cell \\${t}" \\${dis?'disabled':''} onclick="pick(\\${ix})">\\${L}</button>\\`}).join('')}
-return\\`<div class="col \\${c==nx&&!p.fin?'nx':''} \\${c==5?'r5':''}" id="c\\${c}"><div class="ch">\\${c==0?'Старт':c==10?'Финиш':c+(c==5?' ⚠️ полоса риска':' колонна')}</div><div class="pw">\\${pw}</div>\\${cells}</div>\\`}).join('')+\\`</div>\\`;
-h+=\\`<div class="pn"><span class="dot" style="background:\\${p.k}"></span><b>Ход: \\${p.n}</b> — \\${p.pr}<br><span class="tag">\\${p.pd}</span><br>🎯 Цель: \\${p.g[0]} <b class="\\${ok?'ok':'no'}">\\${ok?'✓ сейчас выполнена':'✗ пока нет'}</b><br>\\${p.col<10?\\`<b style="color:var(--gd)">Выбери клетку в колонне \\${nx<10?nx:'ФИНИШ'}</b>\\`:''}\\${p.st.length?\\`<br><span class="tag">Статусы: \\${p.st.map(s=>({skip:'пропуск хода',loss:'убыток −'+fmt(s.a),gain:'доход +'+fmt(s.a),block:'блок рейтинга',tech:'бонус к проектам +'+fmt(s.a)}[s.t])+' ('+s.c+')').join(', ')}</span>\\`:''}</div><div class="pn"><button class="btn s" onclick="rules()">📖 Правила</button><button class="btn s" onclick="sab()">😈 Подстава</button><button class="btn s" onclick="shield()">🛡 Страховка</button><button class="btn s" onclick="trade()">🤝 Обмен</button><button class="btn s" onclick="SND=!SND;render()">\\${SND?'🔊':'🔇'}</button></div><div class="pn" id="lg">\\${LOG.map(x=>'• '+x).join('<br>')}</div>\\`;
-$('#app').innerHTML=h;const e=$('#c'+Math.min(nx,10));e&&e.scrollIntoView({inline:'center',block:'nearest',behavior:'auto'})}
-let SND=true,AC;const AUC=['Эксклюзивный заказ','Долгосрочный контракт','Срочный заказ','Контракт на обслуживание'],others=()=>G.ps.filter((q,i)=>i!=G.i&&!q.fin);
-function beep(f,d=.12,t='sine'){if(!SND)return;try{AC=AC||new(window.AudioContext||window.webkitAudioContext)();const o=AC.createOscillator(),v=AC.createGain();o.type=t;o.frequency.value=f;v.gain.value=.07;o.connect(v);v.connect(AC.destination);o.start();o.stop(AC.currentTime+d)}catch(e){}}
-function fx(){beep(660,.15);setTimeout(()=>beep(880,.15),150);setTimeout(()=>beep(1175,.35),300);for(let i=0;i<70;i++){const e=document.createElement('i');e.style.cssText=\\`position:fixed;top:-12px;left:\\${Math.random()*100}vw;width:8px;height:12px;background:hsl(\\${Math.random()*360},85%,60%);z-index:99;animation:fall \\${2+Math.random()*2}s linear forwards\\`;document.body.appendChild(e);setTimeout(()=>e.remove(),4200)}}
-function lb(){const w=G.ps.filter(p=>p.win).map(p=>({n:p.n,pr:p.pr,r:p.r,m:p.m}));try{const a=JSON.parse(localStorage.getItem('fg_lb')||'[]').concat(w);a.sort((x,y)=>y.r-x.r||y.m-x.m);localStorage.setItem('fg_lb',JSON.stringify(a.slice(0,50)));localStorage.removeItem('fg_save')}catch(e){}try{const u=parent.CFG&&parent.CFG.LB_URL;if(u&&w.length)fetch(u,{method:'POST',mode:'no-cors',body:JSON.stringify(w)})}catch(e){}}
-function rules(){M('📖 Правила','<p>Цель: дойти до финиша с выполненной целью.</p><p>Ход: статусы → пропуск → следующая колонна → клетка → действие. Работа и Проект дают деньги (+5 000 / 10 000 / 15 000 ₽ за рейтинг 3–5 / 6–8 / 9–10). Обучение: платишь, получаешь рейтинг. Проект → карта риска, Кейс → выбор A/B.</p><p><b>Новое:</b><br>😈 Подстава (50 000 ₽, 1 раз за ход): сопернику −1 рейтинг или пропуск хода.<br>🛡 Страховка (40 000 ₽) отменяет одну подставу.<br>🤝 Обмен: купить у соседа 1 рейтинг за деньги (нужно его согласие).<br>🔨 Аукцион за самые выгодные кейсы.<br>🥇 Первый на финише получает +100 000 ₽.<br>🌪 События рынка каждые 3 хода.</p><p>Побеждает выполнивший цель: выше рейтинг, потом больше денег.</p>',[['Понятно']])}
-function sab(){const p=cur();if(G.used)return M('Подстава','Только 1 подстава за ход',[['Ок']]);if(p.m<5e4)return M('Подстава','Нужно 50 000 ₽',[['Ок']]);const bs=[];others().forEach(q=>[['−1 рейтинг',{r:-1}],['пропуск хода',{s:['skip',0,1]}]].forEach(([l,e])=>bs.push([\\`\\${q.n}: \\${l}\\`,()=>{p.m-=5e4;G.used=1;if(q.sh){q.sh=0;log(\\`\\${p.n} подставил \\${q.n}, но Страховка спасла\\`)}else{eff(q,e);log(\\`\\${p.n} подставил \\${q.n}: \\${l}\\`)}beep(200,.3,'sawtooth');render()}])));bs.push(['Отмена',()=>{},1]);M('😈 Подстава (−50 000 ₽)','Выбери жертву и удар:',bs)}
-function shield(){const p=cur();if(p.sh)return M('Страховка','Она у тебя уже есть',[['Ок']]);if(p.m<4e4)return M('Страховка','Нужно 40 000 ₽',[['Ок']]);p.m-=4e4;p.sh=1;log(p.n+' купил Страховку');beep(700);render()}
-function trade(){const p=cur();M('🤝 Обмен: купить рейтинг',\\`<p class="tag">Ты платишь деньги, получаешь +1 рейтинг, партнёр теряет 1. Цену обсудите вслух.</p><select id="tq">\\${G.ps.map((q,i)=>i!=G.i&&!q.fin&&q.r>0?\\`<option value="\\${i}">\\${q.n} (★\\${q.r})</option>\\`:'').join('')}</select><input id="tp" type="number" min="0" step="10000" value="50000">\\`,[['Предложить',()=>{const q=G.ps[+$('#tq').value],pr=+$('#tp').value||0;if(!q||p.m<pr||p.r>=10)return M('Обмен невозможен','Нет денег, нет партнёра с рейтингом или у тебя максимум.',[['Ок']]);M('Сделка для '+q.n,\\`\\${p.n} платит <b>\\${fmt(pr)}</b> за 1 твой рейтинг. Согласен?\\`,[['Согласен',()=>{p.m-=pr;q.m+=pr;addR(p,1);addR(q,-1);log(\\`Обмен: \\${p.n} купил рейтинг у \\${q.n} за \\${fmt(pr)}\\`);beep(600);render()}],['Отказ',()=>{},1]])}],['Отмена',()=>{},1]])}
-function auc(t,A,B){const ps=G.ps.filter(q=>!q.fin);let i=0,best=null,bid=0;const nx=()=>{if(i>=ps.length){if(!best){log('Аукцион «'+t+'»: ставок нет');return fin()}best.m-=bid;log(\\`Аукцион «\\${t}»: \\${best.n} за \\${fmt(bid)}\\`);return M('🔨 Продано!',\\`\\${best.n} купил «\\${t}» за \\${fmt(bid)}. Выбери вариант:\\`,[['A) '+desc(A),()=>ap(best,t,A)],['B) '+desc(B),()=>ap(best,t,B)]])}const q=ps[i];M('🔨 Аукцион: '+t,\\`<p><b>\\${q.n}</b>, у тебя \\${fmt(q.m)}. Лучшая ставка: \\${best?fmt(bid)+' ('+best.n+')':'нет'}</p><p class="tag">A) \\${desc(A)}<br>B) \\${desc(B)}</p><input id="ab" type="number" min="0" step="10000" value="\\${bid+1e4}">\\`,[['Поставить',()=>{const v=+$('#ab').value||0;if(v>bid&&v<=q.m){bid=v;best=q}i++;nx()}],['Пас',()=>{i++;nx()},1]])};nx()}
-function ap(q,t,x){eff(q,x);log(\\`\\${q.n}: Кейс «\\${t}» → \\${desc(x)}\\`);fin()}
-
-window.addEventListener('message',(e)=>{if(e.data.type==='SETTINGS'){SETTINGS=e.data;if(SETTINGS.settings&&SETTINGS.settings.bonus1)BONUS=[SETTINGS.settings.bonus1,SETTINGS.settings.bonus2,SETTINGS.settings.bonus3];if(!G)setup();else render()}});
-setup();
-<\/script></body></html>`;
-frame.srcdoc = gameHTML;
-</script>
-</body>
-</html>
+function sendFb(){var t=document.getElementById('ft').value.trim(),s=document.getElementById('fs');if(!t){s.textContent='Напиши сообщение';return}var d={type:document.getElementById('fk').value,name:document.getElementById('fn').value,text:t,t:Date.now()};
+if(CFG.FORM_URL){fetch(CFG.FORM_URL,{method:'POST',mode:'no-cors',body:JSON.stringify(d)}).then(function(){s.textContent='Спасибо! Отправлено ✅';document.getElementById('ft').value=''})}
+else if(CFG.EMAIL){location.href='mailto:'+CFG.EMAIL+'?subject='+encodeURIComponent('Финансовая игра: '+d.type)+'&body='+encodeURIComponent(d.name+'\n'+t);s.textContent='Открываю почту…'}
+else{try{var a=JSON.parse(localStorage.getItem('fg_fb')||'[]');a.push(d);localStorage.setItem('fg_fb',JSON.stringify(a))}catch(e){}s.textContent='Сохранено на этом устройстве (приём сообщений пока не подключён).'}}
+</script></body></html>
